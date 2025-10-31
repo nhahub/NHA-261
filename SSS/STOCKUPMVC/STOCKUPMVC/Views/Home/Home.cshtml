@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Welcome to StockUp MVC";
+}
+
+<div class="hero-section text-center text-light d-flex align-items-center justify-content-center"
+     style="height:90vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('/images/warehouse-bg.jpg') center/cover no-repeat;">
+    <div>
+        <h1 class="display-3 fw-bold mb-3">STOCKUP MVC</h1>
+        <p class="lead mb-4">Smart Warehouse & Inventory Management System</p>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-lg btn-warning fw-bold me-3">View Products</a>
+        <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-outline-light">Login</a>
+    </div>
+</div>
+
+<section class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Why Choose StockUp?</h2>
+        <p class="text-muted">Manage inventory, orders, and warehouses efficiently with a single, integrated platform.</p>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm p-4">
+                <i class="bi bi-box-seam display-4 text-warning mb-3"></i>
+                <h5>Inventory Tracking</h5>
+                <p>Monitor product movement and stock levels in real time with visual analytics.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm p-4">
+                <i class="bi bi-building-gear display-4 text-warning mb-3"></i>
+                <h5>Warehouse Management</h5>
+                <p>Optimize warehouse space and streamline supply chain operations.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm p-4">
+                <i class="bi bi-bar-chart-line display-4 text-warning mb-3"></i>
+                <h5>Reporting & Insights</h5>
+                <p>Generate detailed sales, purchase, and stock reports instantly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h3 class="fw-bold mb-3">Ready to streamline your warehouse?</h3>
+        <p class="mb-4">Get started with StockUp MVC today and take control of your inventory.</p>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-warning btn-lg">Get Started</a>
+    </div>
+</section>
