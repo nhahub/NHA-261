@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using STOCKUPMVC.Models;
 using STOCKUPMVC.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace STOCKUPMVC.Controllers
 {
-    [AllowAnonymous]
+
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -20,6 +22,7 @@ namespace STOCKUPMVC.Controllers
 
         // ---------------- LOGIN ----------------
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             if (User.Identity!.IsAuthenticated)
@@ -29,6 +32,7 @@ namespace STOCKUPMVC.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -49,22 +53,29 @@ namespace STOCKUPMVC.Controllers
             return View("Login", model);
         }
 
+
         // ---------------- REGISTER ----------------
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Register()
         {
-            if (User.Identity!.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
+            if (User.Identity!.IsAuthenticated == false)
+                return RedirectToAction("Login");
 
+            PopulateRoles();   // نجهز الـ dropdown
             return View("Register");
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
+            {
+                PopulateRoles();
                 return View("Register", model);
+            }
 
             var user = new ApplicationUser
             {
@@ -76,13 +87,17 @@ namespace STOCKUPMVC.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: true);
+                // لو مفيش Role مختار خليه Viewer
+                var role = string.IsNullOrWhiteSpace(model.Role) ? "Viewer" : model.Role;
+
+                await _userManager.AddToRoleAsync(user, role);
                 return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
 
+            PopulateRoles();
             return View("Register", model);
         }
 
@@ -94,6 +109,17 @@ namespace STOCKUPMVC.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        // --------------- HELPER -----------------
+        private void PopulateRoles()
+        {
+            ViewBag.Roles = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "Staff",  Text = "Staff"  },
+        new SelectListItem { Value = "Viewer", Text = "Viewer" }
+        // متعمّد ما أضفتش Admin هنا عشان مينفعش أي حد يعمل Admin بسهولة
+    };
         }
     }
 }

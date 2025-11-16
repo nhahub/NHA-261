@@ -39,6 +39,10 @@ builder.Services.AddControllersWithViews(options =>
 // -------------------- BUILD APP --------------------
 var app = builder.Build();
 
+// ---- SEED ROLES + DEFAULT ADMIN ----
+await DbSeeder.SeedAsync(app);
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

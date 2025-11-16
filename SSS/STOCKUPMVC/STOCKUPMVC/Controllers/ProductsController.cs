@@ -18,6 +18,7 @@ namespace STOCKUPMVC.Controllers
         }
 
         // GET: Products
+        [Authorize(Roles = "Admin,Staff,Viewer")]
         public async Task<IActionResult> Index()
         {
             var products = _context.Products
@@ -41,6 +42,7 @@ namespace STOCKUPMVC.Controllers
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Admin,Staff")]
         public IActionResult Create()
         {
             LoadCategories();
@@ -49,6 +51,7 @@ namespace STOCKUPMVC.Controllers
 
         // POST: Products/Create
         [HttpPost]
+        [Authorize(Roles = "Admin,Staff")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
@@ -64,6 +67,7 @@ namespace STOCKUPMVC.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -77,6 +81,7 @@ namespace STOCKUPMVC.Controllers
 
         // POST: Products/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin,Staff")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Product product)
         {
@@ -105,6 +110,8 @@ namespace STOCKUPMVC.Controllers
         }
 
         // GET: Products/Delete/5
+        // Delete → Admin فقط
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -120,6 +127,7 @@ namespace STOCKUPMVC.Controllers
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
