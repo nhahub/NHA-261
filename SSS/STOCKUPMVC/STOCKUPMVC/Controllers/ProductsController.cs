@@ -1,158 +1,150 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using STOCKUPMVC.Data;
+using STOCKUPMVC.Data.Repositories;
 using STOCKUPMVC.Models;
 
 namespace STOCKUPMVC.Controllers
 {
-    [Authorize]   // <<< ALL actions now require login
-    public class ProductsController : Controller
+    public class ProductController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private const int PageSize = 10;
 
-        public ProductsController(AppDbContext context)
+        public ProductController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        // GET: Products
-        [Authorize(Roles = "Admin,Staff,Viewer")]
-        public async Task<IActionResult> Index()
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(string searchString, int? categoryId, int page = 1)
         {
-            var products = _context.Products
-                .Include(p => p.Category);
-
-            return View(await products.ToListAsync());
-        }
-
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var product = await _context.Products
+            var productsQuery = _unitOfWork.Products
+                .GetAllQueryable()
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductID == id);
+                .AsQueryable();
 
-            if (product == null) return NotFound();
+            // SEARCH
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                productsQuery = productsQuery.Where(p =>
+                    p.Name.Contains(searchString) ||
+                    (p.SKU != null && p.SKU.Contains(searchString)));
+            }
 
-            return View(product);
+            // CATEGORY FILTER
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                productsQuery = productsQuery.Where(p => p.CategoryID == categoryId.Value);
+            }
+
+            // PAGINATION
+            int totalItems = await productsQuery.CountAsync();
+            var products = await productsQuery
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            // SEND CATEGORY LIST
+            ViewBag.Categories = await _unitOfWork.Categories.GetAllAsync();
+
+            ViewBag.SearchString = searchString;
+            ViewBag.CategoryId = categoryId;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)PageSize);
+
+            return View(products);
         }
 
-        // GET: Products/Create
+        // GET: Create
         [Authorize(Roles = "Admin,Staff")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            LoadCategories();
+            ViewBag.Categories = await _unitOfWork.Categories.GetAllAsync();
             return View();
         }
 
-        // POST: Products/Create
-        [HttpPost]
+        // POST: Create
         [Authorize(Roles = "Admin,Staff")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Create(Product product)
         {
             if (!ModelState.IsValid)
             {
-                LoadCategories();
+                ViewBag.Categories = await _unitOfWork.Categories.GetAllAsync();
                 return View(product);
             }
 
-            _context.Add(product);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Products.AddAsync(product);
+            await _unitOfWork.CompleteAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Products/Edit/5
+        // GET: Edit
         [Authorize(Roles = "Admin,Staff")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null) return NotFound();
-
-            var product = await _context.Products.FindAsync(id);
+            var product = await _unitOfWork.Products.GetByIdAsync(id);
             if (product == null) return NotFound();
 
-            LoadCategories(product.CategoryID);
+            ViewBag.Categories = await _unitOfWork.Categories.GetAllAsync();
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        [HttpPost]
+        // POST: Edit
         [Authorize(Roles = "Admin,Staff")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Product product)
+        [HttpPost]
+        public async Task<IActionResult> Edit(Product product)
         {
-            if (id != product.ProductID) return NotFound();
-
             if (!ModelState.IsValid)
             {
-                LoadCategories(product.CategoryID);
+                ViewBag.Categories = await _unitOfWork.Categories.GetAllAsync();
                 return View(product);
             }
 
-            try
-            {
-                _context.Update(product);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(product.ProductID))
-                    return NotFound();
-
-                throw;
-            }
+            _unitOfWork.Products.Update(product);
+            await _unitOfWork.CompleteAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Products/Delete/5
-        // Delete → Admin فقط
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Details
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null) return NotFound();
-
-            var product = await _context.Products
+            var product = await _unitOfWork.Products
+                .GetAllQueryable()
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductID == id);
+                .FirstOrDefaultAsync(p => p.ProductID == id);
 
             if (product == null) return NotFound();
 
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // GET: Delete
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _unitOfWork.Products.GetByIdAsync(id);
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+
+        // POST: Delete
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _unitOfWork.Products.GetByIdAsync(id);
+            if (product == null) return NotFound();
 
-            if (product != null)
-                _context.Products.Remove(product);
+            _unitOfWork.Products.Delete(product);
+            await _unitOfWork.CompleteAsync();
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private void LoadCategories(int? selectedCategory = null)
-        {
-            ViewBag.CategoryID = new SelectList(
-                _context.Categories,
-                "CategoryID",
-                "Name",
-                selectedCategory
-            );
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.ProductID == id);
         }
     }
 }

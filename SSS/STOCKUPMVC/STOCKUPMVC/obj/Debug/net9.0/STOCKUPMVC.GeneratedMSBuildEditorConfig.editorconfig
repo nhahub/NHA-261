@@ -17,49 +17,97 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = STOCKUPMVC
 build_property.RootNamespace = STOCKUPMVC
-build_property.ProjectDir = C:\Users\User\Source\Repos\STOCKUPMVC\STOCKUPMVC\
+build_property.ProjectDir = C:\Users\Dell\Source\Repos\NHA-261_notorg\SSS\STOCKUPMVC\STOCKUPMVC\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\User\Source\Repos\STOCKUPMVC\STOCKUPMVC
+build_property.MSBuildProjectDirectory = C:\Users\Dell\Source\Repos\NHA-261_notorg\SSS\STOCKUPMVC\STOCKUPMVC
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Account/Login.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Account/Register.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Home/Home.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Home/AdminView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBZG1pblZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Home/Home.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Home/Privacy.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Shared/Error.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Home/UserView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVc2VyVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Products/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Products/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Products/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Products/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Products/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/_ViewImports.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/_ViewStart.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Source/Repos/STOCKUPMVC/STOCKUPMVC/Views/Shared/_Layout.cshtml]
+[C:/Users/Dell/Source/Repos/NHA-261_notorg/SSS/STOCKUPMVC/STOCKUPMVC/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-fm4xl9o445

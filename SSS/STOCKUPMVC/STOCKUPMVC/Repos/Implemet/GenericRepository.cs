@@ -54,5 +54,10 @@ namespace STOCKUPMVC.Data.Repositories
                 return await _dbSet.CountAsync();
             return await _dbSet.CountAsync(predicate);
         }
+        public IQueryable<T> GetAllQueryable()
+        {
+            return _dbSet.AsQueryable();
+        }
+
     }
 }

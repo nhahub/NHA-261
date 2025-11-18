@@ -1,15 +1,39 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using STOCKUPMVC.Data.Repositories;
+using STOCKUPMVC.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace STOCKUPMVC.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public HomeController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork)
         {
-            return View("Home");
+            _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> Index()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                // Admin/Staff users go to AdminView
+                if (roles.Contains("Admin") || roles.Contains("Staff"))
+                    return View("AdminView");
+            }
+
+            // All others (public or viewer) see UserView
+            return View("UserView");
+        }
     }
 }

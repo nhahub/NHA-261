@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using STOCKUPMVC.Models;
 using STOCKUPMVC.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
+using System.Threading.Tasks;
 
 namespace STOCKUPMVC.Controllers
 {
-
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -25,7 +23,7 @@ namespace STOCKUPMVC.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            if (User.Identity!.IsAuthenticated)
+            if (User.Identity != null && User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
 
             return View();
@@ -36,46 +34,33 @@ namespace STOCKUPMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View("Login", model);
+            if (!ModelState.IsValid) return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    user, model.Password, model.RememberMe, lockoutOnFailure: false);
-
-                if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                if (result.Succeeded) return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid email or password");
-            return View("Login", model);
+            return View(model);
         }
 
-
-        // ---------------- REGISTER ----------------
+        // ---------------- REGISTER (Public Viewer) ----------------
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public IActionResult Register()
         {
-            if (User.Identity!.IsAuthenticated == false)
-                return RedirectToAction("Login");
-
-            PopulateRoles();   // نجهز الـ dropdown
-            return View("Register");
+            return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                PopulateRoles();
-                return View("Register", model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
             var user = new ApplicationUser
             {
@@ -87,18 +72,17 @@ namespace STOCKUPMVC.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                // لو مفيش Role مختار خليه Viewer
-                var role = string.IsNullOrWhiteSpace(model.Role) ? "Viewer" : model.Role;
+                // Default role for public registration is Viewer
+                if (!await _userManager.IsInRoleAsync(user, "Viewer"))
+                    await _userManager.AddToRoleAsync(user, "Viewer");
 
-                await _userManager.AddToRoleAsync(user, role);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login");
             }
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
 
-            PopulateRoles();
-            return View("Register", model);
+            return View(model);
         }
 
         // ---------------- LOGOUT ----------------
@@ -108,18 +92,7 @@ namespace STOCKUPMVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
-        }
-
-        // --------------- HELPER -----------------
-        private void PopulateRoles()
-        {
-            ViewBag.Roles = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "Staff",  Text = "Staff"  },
-        new SelectListItem { Value = "Viewer", Text = "Viewer" }
-        // متعمّد ما أضفتش Admin هنا عشان مينفعش أي حد يعمل Admin بسهولة
-    };
+            return RedirectToAction("Index", "Home");
         }
     }
 }
