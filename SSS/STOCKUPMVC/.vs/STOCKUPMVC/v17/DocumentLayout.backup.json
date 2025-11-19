@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\views\\products\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\views\\products\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\viewmodels\\productformviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\viewmodels\\productformviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\repos\\implemet\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\repos\\implemet\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\repos\\interface\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\repos\\interface\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\views\\products\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\views\\products\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -19,20 +47,8 @@
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\views\\products\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\views\\products\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\views\\products\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\viewmodels\\productdetailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\viewmodels\\productdetailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\viewmodels\\productformviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\viewmodels\\productformviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\viewmodels\\productlistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -79,14 +95,6 @@
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\views\\home\\userview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\repos\\interface\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\repos\\interface\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\repos\\implemet\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\repos\\implemet\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\repos\\implemet\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\repos\\implemet\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -96,10 +104,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\stockupmvc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\stockupmvc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\models\\warehouse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -152,10 +156,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\models\\supplierproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\models\\supplierproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|solutionrelative:stockupmvc\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9952EF8D-E5D5-41E3-BC5D-2332801E666D}|STOCKUPMVC\\STOCKUPMVC.csproj|c:\\users\\dell\\source\\repos\\nha-261_notorg\\sss\\stockupmvc\\stockupmvc\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -213,7 +213,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -221,39 +221,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "ProductsController.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Controllers\\ProductsController.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Controllers\\ProductsController.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Controllers\\ProductsController.cs*",
-              "RelativeToolTip": "STOCKUPMVC\\Controllers\\ProductsController.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAALQAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "STOCKUPMVC\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAUwKIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T19:27:57.124Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Index.cshtml",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Index.cshtml*",
-              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Index.cshtml*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-17T20:25:07.227Z",
+              "DocumentIndex": 5,
+              "Title": "IGenericRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
+              "RelativeToolTip": "STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAwwBUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-30T14:39:36.145Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Create.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Create.cshtml",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Create.cshtml*",
-              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Create.cshtml*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Create.cshtml",
+              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Create.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABMAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-18T12:57:51.049Z",
               "EditorCaption": ""
@@ -261,24 +261,76 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Edit.cshtml",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Edit.cshtml",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Edit.cshtml*",
-              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Edit.cshtml*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-18T12:57:55.594Z",
+              "Title": "ProductFormViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs",
+              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-19T14:29:19.427Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Product.cs",
+              "RelativeToolTip": "STOCKUPMVC\\Models\\Product.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAwwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-30T14:34:50.504Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GenericRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
+              "RelativeToolTip": "STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAcwFYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-30T14:40:08.602Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LoginViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
+              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-30T16:11:55.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Delete.cshtml",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Delete.cshtml",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Delete.cshtml",
+              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Delete.cshtml",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBkAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-18T12:57:40.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Details.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Details.cshtml",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Details.cshtml*",
-              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Details.cshtml*",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Details.cshtml",
+              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Details.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-18T12:57:32.032Z",
@@ -286,25 +338,38 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Delete.cshtml",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Delete.cshtml",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Delete.cshtml",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Delete.cshtml*",
-              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Delete.cshtml*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAGAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Edit.cshtml",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Edit.cshtml",
+              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-18T12:57:40.305Z",
+              "WhenOpened": "2025-11-18T12:57:55.594Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Index.cshtml",
+              "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Products\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Products\\Index.cshtml",
+              "RelativeToolTip": "STOCKUPMVC\\Views\\Products\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-17T20:25:07.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "ProductDetailsViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductDetailsViewModel.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\ProductDetailsViewModel.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductDetailsViewModel.cs*",
-              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\ProductDetailsViewModel.cs*",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductDetailsViewModel.cs",
+              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\ProductDetailsViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T14:31:37.702Z",
@@ -312,25 +377,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ProductFormViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs*",
-              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\ProductFormViewModel.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T14:29:19.427Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "ProductListViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductListViewModel.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\ProductListViewModel.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductListViewModel.cs*",
-              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\ProductListViewModel.cs*",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\ProductListViewModel.cs",
+              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\ProductListViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T14:28:50.507Z",
@@ -338,7 +390,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 20,
               "Title": "InventoryListViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\InventoryListViewModel.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\InventoryListViewModel.cs",
@@ -351,7 +403,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 18,
               "Title": "InventoryEditViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\InventoryEditViewModel.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\InventoryEditViewModel.cs",
@@ -364,7 +416,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Program.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Program.cs",
@@ -377,7 +429,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 15,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Inventory\\Edit.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Inventory\\Edit.cshtml",
@@ -390,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 14,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Inventory\\Delete.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Inventory\\Delete.cshtml",
@@ -403,7 +455,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "create.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Inventory\\create.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Inventory\\create.cshtml",
@@ -416,7 +468,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 19,
               "Title": "List.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Inventory\\List.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Inventory\\List.cshtml",
@@ -429,7 +481,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 22,
               "Title": "UserView.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Home\\UserView.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Home\\UserView.cshtml",
@@ -442,7 +494,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "InventoryController.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Controllers\\InventoryController.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Controllers\\InventoryController.cs",
@@ -455,7 +507,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 21,
               "Title": "Home.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Home\\Home.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Home\\Home.cshtml",
@@ -468,19 +520,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "IGenericRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
-              "RelativeToolTip": "STOCKUPMVC\\Repos\\Interface\\IGenericRepository.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAwwBUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:39:36.145Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 23,
               "Title": "UnitOfWork.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Implemet\\UnitOfWork.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Repos\\Implemet\\UnitOfWork.cs",
@@ -492,19 +532,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "GenericRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
-              "RelativeToolTip": "STOCKUPMVC\\Repos\\Implemet\\GenericRepository.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAADwvyQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:40:08.602Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 24,
               "Title": "tmp6ECC.tmp.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\AppData\\Local\\Temp\\tmp6ECC.tmp.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Local\\Temp\\tmp6ECC.tmp.cs",
@@ -516,7 +544,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 25,
               "Title": "STOCKUPMVC.csproj",
               "DocumentMoniker": "C:\\Users\\Dell\\Source\\Repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
               "RelativeDocumentMoniker": "STOCKUPMVC\\STOCKUPMVC.csproj",
@@ -528,19 +556,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Product.cs",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\Product.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Product.cs",
-              "RelativeToolTip": "STOCKUPMVC\\Models\\Product.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAA9wBAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:34:50.504Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "_AdminLayout.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Shared\\_AdminLayout.cshtml",
@@ -552,7 +568,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Shared\\_Layout.cshtml",
@@ -564,7 +580,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "Inventory.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Inventory.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\Inventory.cs",
@@ -576,7 +592,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "Warehouse.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Warehouse.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\Warehouse.cs",
@@ -588,7 +604,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "PurchaseOrder.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\PurchaseOrder.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\PurchaseOrder.cs",
@@ -600,7 +616,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Category.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\Category.cs",
@@ -612,7 +628,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "AdminView.cshtml",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Views\\Home\\AdminView.cshtml",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Views\\Home\\AdminView.cshtml",
@@ -624,7 +640,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "ScaffoldingReadMe.txt",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ScaffoldingReadMe.txt",
               "RelativeDocumentMoniker": "STOCKUPMVC\\ScaffoldingReadMe.txt",
@@ -636,7 +652,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Controllers\\HomeController.cs",
@@ -648,7 +664,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\OrderItem.cs",
@@ -660,7 +676,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "SalesOrder.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\SalesOrder.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\SalesOrder.cs",
@@ -672,7 +688,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "Supplier.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\Supplier.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\Supplier.cs",
@@ -684,7 +700,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 38,
               "Title": "SupplierProduct.cs",
               "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\Models\\SupplierProduct.cs",
               "RelativeDocumentMoniker": "STOCKUPMVC\\Models\\SupplierProduct.cs",
@@ -693,18 +709,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T15:25:33.596Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "LoginViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
-              "RelativeDocumentMoniker": "STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
-              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
-              "RelativeToolTip": "STOCKUPMVC\\ViewModels\\LoginViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T16:11:55.719Z"
             },
             {
               "$type": "Document",
