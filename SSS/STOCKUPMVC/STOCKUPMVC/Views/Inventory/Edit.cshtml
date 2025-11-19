@@ -1,0 +1,34 @@
+﻿@model STOCKUPMVC.Models.ViewModels.InventoryEditViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Inventory";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <div class="mb-3">
+        <label asp-for="ProductID" class="form-label"></label>
+        <select asp-for="ProductID" asp-items="Model.Products" class="form-control" disabled></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="WarehouseID" class="form-label"></label>
+        <select asp-for="WarehouseID" asp-items="Model.Warehouses" class="form-control" disabled></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Quantity" class="form-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="List" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

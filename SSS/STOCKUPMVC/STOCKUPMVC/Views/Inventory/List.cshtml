@@ -1,0 +1,59 @@
+﻿@model STOCKUPMVC.Models.ViewModels.InventoryListViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Inventory List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="mb-3 d-flex justify-content-between align-items-center">
+    <a asp-action="Create" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Inventory</a>
+
+    <!-- Filter Form -->
+    <form asp-action="List" method="get" class="d-flex">
+        <select asp-for="SelectedProductId" asp-items="Model.Products" class="form-select me-2">
+            <option value="">All Products</option>
+        </select>
+
+        <select asp-for="SelectedWarehouseId" asp-items="Model.Warehouses" class="form-select me-2">
+            <option value="">All Warehouses</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+</div>
+
+<table class="table table-bordered table-striped mt-2">
+    <thead class="table-dark">
+        <tr>
+            <th>Product</th>
+            <th>Warehouse</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Inventories.Any())
+        {
+            foreach (var item in Model.Inventories)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Warehouse.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-productId="@item.ProductID" asp-route-warehouseId="@item.WarehouseID" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i></a>
+                        <a asp-action="Delete" asp-route-productId="@item.ProductID" asp-route-warehouseId="@item.WarehouseID" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">No inventory found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

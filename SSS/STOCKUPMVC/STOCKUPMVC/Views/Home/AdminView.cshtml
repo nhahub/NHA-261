@@ -1,0 +1,100 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Dashboard Cards -->
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+        <div class="card dashboard-card shadow-sm p-3 h-100">
+            <div class="text-center">
+                <div class="fs-1 mb-2">📦</div>
+                <h5>Products</h5>
+                <p class="text-muted">Manage warehouse items</p>
+            </div>
+            <a asp-controller="Products" asp-action="Index" class="btn btn-primary w-100 mt-auto">Go</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card dashboard-card shadow-sm p-3 h-100">
+            <div class="text-center">
+                <div class="fs-1 mb-2">📥</div>
+                <h5>Stock Movements</h5>
+                <p class="text-muted">Track stock in/out</p>
+            </div>
+            <a asp-controller="StockMovement" asp-action="List" class="btn btn-success w-100 mt-auto">Go</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card dashboard-card shadow-sm p-3 h-100">
+            <div class="text-center">
+                <div class="fs-1 mb-2">🛒</div>
+                <h5>Sales Orders</h5>
+                <p class="text-muted">Customer orders</p>
+            </div>
+            <a asp-controller="SalesOrder" asp-action="List" class="btn btn-warning w-100 mt-auto">Go</a>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card dashboard-card shadow-sm p-3 h-100">
+            <div class="text-center">
+                <div class="fs-1 mb-2">📑</div>
+                <h5>Purchase Orders</h5>
+                <p class="text-muted">Supplier orders</p>
+            </div>
+            <a asp-controller="PurchaseOrder" asp-action="List" class="btn btn-danger w-100 mt-auto">Go</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Recent Orders -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white">
+        <h5 class="fw-bold mb-0">Recent Sales Orders</h5>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>John Doe</td>
+                    <td>2025-11-17</td>
+                    <td><span class="badge bg-warning">Pending</span></td>
+                    <td>$250</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>Jane Smith</td>
+                    <td>2025-11-16</td>
+                    <td><span class="badge bg-success">Completed</span></td>
+                    <td>$480</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .dashboard-card {
+            border-radius: 10px;
+        }
+    </style>
+}
