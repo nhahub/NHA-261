@@ -15,5 +15,8 @@ namespace STOCKUPMVC.Data.Repositories
         void Delete(T entity);
         Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
         IQueryable<T> GetAllQueryable();
+        Task<IEnumerable<T>> FindWithIncludesAsync(
+            Expression<Func<T, bool>> predicate,
+            params Expression<Func<T, object>>[] includes);
     }
 }

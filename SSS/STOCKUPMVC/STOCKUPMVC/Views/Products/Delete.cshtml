@@ -1,4 +1,4 @@
-﻿@model STOCKUPMVC.Models.Product
+﻿@model STOCKUPMVC.Models.ViewModels.ProductDetailsViewModel
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,18 +8,18 @@
 <h2>@ViewData["Title"]</h2>
 
 <div class="card p-3 mb-3">
-    <h4>@Model.Name</h4>
+    <h4>@Model.Product.Name</h4>
     <dl class="row">
         <dt class="col-sm-2">SKU</dt>
-        <dd class="col-sm-10">@Model.SKU</dd>
+        <dd class="col-sm-10">@Model.Product.SKU</dd>
         <dt class="col-sm-2">Category</dt>
-        <dd class="col-sm-10">@Model.Category?.Name</dd>
+        <dd class="col-sm-10">@Model.Product.Category?.Name</dd>
         <dt class="col-sm-2">Price</dt>
-        <dd class="col-sm-10">@Model.Price.ToString("C")</dd>
+        <dd class="col-sm-10">@Model.Product.Price.ToString("C")</dd>
     </dl>
 
     <form asp-action="DeleteConfirmed" method="post">
-        <input type="hidden" asp-for="ProductID" />
+        <input type="hidden" asp-for="Product.ProductID" />
         <button type="submit" class="btn btn-danger">Delete</button>
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </form>

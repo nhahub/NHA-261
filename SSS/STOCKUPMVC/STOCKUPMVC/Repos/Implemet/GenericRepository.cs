@@ -33,6 +33,29 @@ namespace STOCKUPMVC.Data.Repositories
             return await _dbSet.Where(predicate).AsNoTracking().ToListAsync();
         }
 
+        // ✅ New: Find with predicate and optional includes
+        public async Task<IEnumerable<T>> FindWithIncludesAsync(
+            Expression<Func<T, bool>> predicate,
+            params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            // Apply includes if provided
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            // Apply the predicate
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            return await query.AsNoTracking().ToListAsync();
+        }
+
         public async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -54,10 +77,10 @@ namespace STOCKUPMVC.Data.Repositories
                 return await _dbSet.CountAsync();
             return await _dbSet.CountAsync(predicate);
         }
+
         public IQueryable<T> GetAllQueryable()
         {
             return _dbSet.AsQueryable();
         }
-
     }
 }
