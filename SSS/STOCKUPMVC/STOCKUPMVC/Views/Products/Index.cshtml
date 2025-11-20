@@ -1,66 +1,74 @@
 ﻿@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Products";
 }
 
-<h2>Products</h2>
+<h2>@ViewData["Title"]</h2>
 
-<form method="get" asp-action="Index" class="row mb-3">
-    <div class="col-md-4">
-        <input type="text" name="searchString" class="form-control"
+<!-- Search & Filter -->
+<form method="get" asp-action="Index" class="row g-3 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="SearchString" class="form-control"
                placeholder="Search by Name or SKU"
                value="@Model.SearchString" />
     </div>
     <div class="col-md-4">
-        <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
+        <select asp-for="CategoryId" asp-items="Model.Categories ?? new SelectList(Enumerable.Empty<SelectListItem>())" class="form-select">
             <option value="">All Categories</option>
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <button class="btn btn-primary w-100">Search</button>
     </div>
 </form>
 
-@if (User.IsInRole("Admin") || User.IsInRole("Staff"))
-{
-    <a class="btn btn-success mb-3" asp-controller="Products" asp-action="Create">+ Add Product</a>
-}
-
+<!-- Products Table -->
 <table class="table table-bordered table-striped table-hover">
-    <thead class="thead-light">
+    <thead class="table-light">
         <tr>
             <th>Name</th>
             <th>SKU</th>
             <th>Category</th>
             <th>Price</th>
             <th>Description</th>
-            <th style="width: 200px;">Actions</th>
+            <th style="width: 180px;">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Products)
+        @if (Model.Products != null && Model.Products.Any())
+        {
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.SKU</td>
+                    <td>@item.Category?.Name ?? "N/A"</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Description ?? "No description"</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Details</a>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                        {
+                            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.ProductID">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.SKU</td>
-                <td>@item.Category?.Name</td>
-                <td>@item.Price.ToString("C")</td>
-                <td>@item.Description</td>
-                <td>
-                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Details</a>
-                    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
-                    {
-                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.ProductID">Edit</a>
-                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
-                    }
-                </td>
+                <td colspan="6" class="text-center">No products found.</td>
             </tr>
         }
     </tbody>
 </table>
 
+<!-- Pagination -->
 @if (Model.TotalPages > 1)
 {
     <nav aria-label="Page navigation">
@@ -68,7 +76,7 @@
             @for (int i = 1; i <= Model.TotalPages; i++)
             {
                 <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
-                    <a class="page-link" href="?page=@i&searchString=@Model.SearchString&categoryId=@Model.CategoryId">@i</a>
+                    <a class="page-link" href="?page=@i&SearchString=@Model.SearchString&CategoryId=@Model.CategoryId">@i</a>
                 </li>
             }
         </ul>

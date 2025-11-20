@@ -7847,23 +7847,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dell\\.nuget\\packages\\": {},
-    "D:\\Visual Studio IDE\\tools and SDKs\\NuGetPackages": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\Source\\Repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
       "projectName": "STOCKUPMVC",
-      "projectPath": "C:\\Users\\Dell\\Source\\Repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
-      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\Source\\Repos\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\obj\\",
+      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "D:\\Visual Studio IDE\\tools and SDKs\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7939,7 +7939,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

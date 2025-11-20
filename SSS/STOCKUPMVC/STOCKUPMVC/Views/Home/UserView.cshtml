@@ -1,5 +1,71 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Products";
 }
+
+<div class="container mt-4">
+
+    <h1 class="mb-4">Available Products</h1>
+
+    <!-- Search & Filter -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <input type="text" name="SearchString" value="@Model.SearchString" class="form-control" placeholder="Search products..." />
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-4">
+                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </form>
+
+    <!-- Products Grid -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <!-- Placeholder image -->
+                    <img src="~/images/placeholder.png" class="card-img-top" alt="@product.Name" />
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@product.Name</h5>
+
+                        <!-- Short description from existing Description -->
+                        <p class="card-text text-truncate">
+                            @(product.Description != null && product.Description.Length > 50 ? product.Description.Substring(0, 50) + "..." : product.Description)
+                        </p>
+
+                        <div class="mt-auto">
+                            <span class="fw-bold">$@product.Price</span>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductID" class="btn btn-sm btn-outline-primary float-end">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?CategoryId=@Model.CategoryId&SearchString=@Model.SearchString&page=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
