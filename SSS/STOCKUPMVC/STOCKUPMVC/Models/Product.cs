@@ -28,6 +28,9 @@ namespace STOCKUPMVC.Models
 
         public decimal Price { get; set; }
 
+        // ✅ ADD THIS PROPERTY
+        public string ImageUrl { get; set; } = "/images/placeholder.png";
+
         // Navigation properties
         public Category Category { get; set; }
         public ICollection<Inventory> Inventories { get; set; }

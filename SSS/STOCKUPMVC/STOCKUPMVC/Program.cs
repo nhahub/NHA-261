@@ -22,6 +22,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// -------------------- SESSION SUPPORT (ADD THIS) --------------------
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Cart expires after 30 mins
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Important for GDPR
+    options.Cookie.Name = "StockUpCart";
+});
+
 // -------------------- REPOSITORIES --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -43,6 +52,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// -------------------- ADD SESSION MIDDLEWARE (ADD THIS) --------------------
+app.UseSession();
 
 app.UseRouting();
 app.UseAuthentication();

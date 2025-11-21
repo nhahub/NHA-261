@@ -14,5 +14,6 @@ namespace STOCKUPMVC.Models.ViewModels
         public Product Product { get; set; }
 
         public SelectList Categories { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
 }

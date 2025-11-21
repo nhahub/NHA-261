@@ -7,7 +7,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Product.ProductID" />
 
     <div class="form-group mb-3">
@@ -39,8 +39,32 @@
         <textarea asp-for="Product.Description" class="form-control"></textarea>
     </div>
 
+    <!-- ADDED: Image Upload Field -->
+    <div class="form-group mb-3">
+        <label asp-for="ImageFile" class="control-label">Product Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+        <small class="form-text text-muted">
+            Upload a new product image (JPEG, PNG, GIF - max 5MB). Leave empty to keep current image.
+        </small>
+    </div>
+
+    <!-- ADDED: Current Image Display -->
+    @if (!string.IsNullOrEmpty(Model.Product.ImageUrl) && Model.Product.ImageUrl != "/images/placeholder.png")
+    {
+        <div class="form-group mb-3">
+            <label class="control-label">Current Image</label>
+            <div>
+                <img src="@Model.Product.ImageUrl" alt="Current product image" style="max-height: 200px;" class="img-thumbnail" />
+                <div class="mt-1">
+                    <small class="text-muted">@Model.Product.ImageUrl</small>
+                </div>
+            </div>
+        </div>
+    }
+
     <button type="submit" class="btn btn-success">Update</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a asp-action="WorkerIndex" class="btn btn-secondary">Cancel</a>
 </form>
 
 @section Scripts {

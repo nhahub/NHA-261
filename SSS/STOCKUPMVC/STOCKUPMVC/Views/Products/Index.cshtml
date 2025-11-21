@@ -33,7 +33,7 @@
             <th>Category</th>
             <th>Price</th>
             <th>Description</th>
-            <th style="width: 180px;">Actions</th>
+            <th style="width: 250px;">Actions</th> <!-- Increased width -->
         </tr>
     </thead>
     <tbody>
@@ -49,6 +49,16 @@
                     <td>@item.Description ?? "No description"</td>
                     <td>
                         <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Details</a>
+
+                        <!-- ADD TO CART BUTTON - Show to customers only -->
+                        @if (!User.IsInRole("Admin") && !User.IsInRole("Staff"))
+                        {
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.ProductID" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>
+                            </form>
+                        }
 
                         @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                         {
