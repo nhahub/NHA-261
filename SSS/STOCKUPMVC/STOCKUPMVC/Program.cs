@@ -94,6 +94,19 @@ using (var scope = app.Services.CreateScope())
         await userManager.CreateAsync(admin, "Hazem123!");
         await userManager.AddToRoleAsync(admin, "Admin");
     }
+    // Create default staff if not exists
+    string staffEmail = "moaaz@stockup.com";
+    if (await userManager.FindByEmailAsync(staffEmail) == null)
+    {
+        var staff = new ApplicationUser
+        {
+            FullName = "Moaaz Magdy",
+            UserName = staffEmail,
+            Email = staffEmail
+        };
+        await userManager.CreateAsync(staff, "staff123!");
+        await userManager.AddToRoleAsync(staff, "Staff");
+    }
 }
 
 app.Run();
