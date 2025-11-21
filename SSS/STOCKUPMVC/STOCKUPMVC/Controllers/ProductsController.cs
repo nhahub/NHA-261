@@ -132,6 +132,7 @@ namespace STOCKUPMVC.Controllers
         {
             if (!ModelState.IsValid)
             {
+                // REPOPULATE CATEGORIES WHEN MODEL IS INVALID
                 var categories = await _unitOfWork.Categories.GetAllAsync();
                 vm.Categories = new SelectList(categories, "CategoryID", "Name", vm.Product.CategoryID);
                 return View(vm);

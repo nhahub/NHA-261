@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("STOCKUPMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff98b7d67d9175af68d1b894a5ac81afe68d8809")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06a9a18b4359f471be1c258b0543781bde5bb4a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("STOCKUPMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("STOCKUPMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -35,5 +35,31 @@ namespace STOCKUPMVC.Controllers
             // All others (public or viewer) see UserView
             return View("UserView");
         }
+
+        // ADD THESE MISSING ACTIONS:
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminView()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Staff,Admin")]
+        public IActionResult WorkerView()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult UserView()
+        {
+            return View();
+        }
+
+        // Add Privacy action if needed
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }

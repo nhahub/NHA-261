@@ -24,7 +24,10 @@ namespace STOCKUPMVC.Controllers
         public IActionResult Login()
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
+            {
+                // If already logged in, redirect based on role
+                return RedirectToAppropriatePage();
+            }
 
             return View();
         }
@@ -40,7 +43,11 @@ namespace STOCKUPMVC.Controllers
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                if (result.Succeeded) return RedirectToAction("Index", "Home");
+                if (result.Succeeded)
+                {
+                    // Redirect based on user role
+                    return RedirectToAppropriatePage();
+                }
             }
 
             ModelState.AddModelError(string.Empty, "Invalid email or password");
@@ -76,7 +83,9 @@ namespace STOCKUPMVC.Controllers
                 if (!await _userManager.IsInRoleAsync(user, "Viewer"))
                     await _userManager.AddToRoleAsync(user, "Viewer");
 
-                return RedirectToAction("Login");
+                // Sign in the user after registration
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in result.Errors)
@@ -93,6 +102,17 @@ namespace STOCKUPMVC.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        // ---------------- HELPER METHOD FOR ROLE-BASED REDIRECTION ----------------
+        private IActionResult RedirectToAppropriatePage()
+        {
+            if (User.IsInRole("Admin"))
+                return RedirectToAction("AdminView", "Home");
+            else if (User.IsInRole("Staff"))
+                return RedirectToAction("WorkerView", "Home");
+            else
+                return RedirectToAction("Index", "Home");
         }
     }
 }
