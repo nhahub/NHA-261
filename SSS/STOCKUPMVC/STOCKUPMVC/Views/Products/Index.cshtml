@@ -46,9 +46,9 @@
                 <tr>
                     <td>@item.Name</td>
                     <td>@item.SKU</td>
-                    <td>@item.Category?.Name ?? "N/A"</td>
+                    <td>@(item.Category?.Name ?? "N/A")</td>
                     <td>@item.Price.ToString("C")</td>
-                    <td>@item.Description ?? "No description"</td>
+                    <td>@(item.Description ?? "No description")</td>
                     <td>
                         <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Details</a>
 

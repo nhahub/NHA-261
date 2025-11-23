@@ -184,38 +184,38 @@ namespace STOCKUPMVC.Controllers
                 return View(vm);
             }
 
+            // Load existing product from DB (IMPORTANT)
+            var productInDb = await _unitOfWork.Products.GetByIdAsync(vm.Product.ProductID);
+            if (productInDb == null) return NotFound();
+
+            // Update basic fields
+            productInDb.Name = vm.Product.Name;
+            productInDb.SKU = vm.Product.SKU;
+            productInDb.Price = vm.Product.Price;
+            productInDb.Description = vm.Product.Description;
+            productInDb.CategoryID = vm.Product.CategoryID;
+
             // Handle image upload
             if (vm.ImageFile != null && vm.ImageFile.Length > 0)
             {
-                // Get existing product to check current image
-                var existingProduct = await _unitOfWork.Products.GetByIdAsync(vm.Product.ProductID);
-                if (existingProduct != null && !string.IsNullOrEmpty(existingProduct.ImageUrl))
+                // delete old image
+                if (!string.IsNullOrEmpty(productInDb.ImageUrl) &&
+                    productInDb.ImageUrl != "/images/placeholder.png")
                 {
-                    // Delete old image if it's not the placeholder
-                    if (existingProduct.ImageUrl != "/images/placeholder.png")
-                    {
-                        DeleteImage(existingProduct.ImageUrl);
-                    }
+                    DeleteImage(productInDb.ImageUrl);
                 }
 
-                // Save new image
-                vm.Product.ImageUrl = await SaveImageAsync(vm.ImageFile);
-            }
-            else
-            {
-                // Keep existing image URL - get it from database
-                var existingProduct = await _unitOfWork.Products.GetByIdAsync(vm.Product.ProductID);
-                if (existingProduct != null)
-                {
-                    vm.Product.ImageUrl = existingProduct.ImageUrl;
-                }
+                // save new image
+                productInDb.ImageUrl = await SaveImageAsync(vm.ImageFile);
             }
 
-            _unitOfWork.Products.Update(vm.Product);
+            // Save updated product
+            _unitOfWork.Products.Update(productInDb);
             await _unitOfWork.CompleteAsync();
 
             return RedirectToAction(nameof(WorkerIndex));
         }
+
 
         // GET: Details
         [AllowAnonymous]
