@@ -1,0 +1,48 @@
+﻿@model STOCKUPMVC.ViewModels.SalesOrderEditViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Sales Order";
+}
+
+<h2>@ViewData["Title"] - #@Model.OrderID</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="OrderID" />
+
+    <div class="mb-3">
+        <label asp-for="WarehouseID" class="form-label"></label>
+        <select asp-for="WarehouseID" asp-items="Model.WarehouseList" class="form-control"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" asp-items="Model.StatusList" class="form-control"></select>
+    </div>
+
+    <h4>Order Items</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>@(item.Quantity* item.UnitPrice).ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Update Order</button>
+    <a asp-action="List" class="btn btn-secondary">Back to List</a>
+</form>

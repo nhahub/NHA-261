@@ -1,0 +1,25 @@
+﻿@model STOCKUPMVC.Models.SalesOrder
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Cancel Order";
+}
+
+<h2>@ViewData["Title"] - #@Model.OrderID</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to cancel this order?
+</div>
+
+<div>
+    <strong>Customer:</strong> @Model.Customer.Name <br />
+    <strong>Warehouse:</strong> @Model.Warehouse.Name <br />
+    <strong>Order Date:</strong> @Model.OrderDate.ToShortDateString() <br />
+    <strong>Status:</strong> @Model.Status <br />
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="OrderID" />
+    <button type="submit" class="btn btn-danger">Cancel Order</button>
+    <a asp-action="List" class="btn btn-secondary">Back to List</a>
+</form>

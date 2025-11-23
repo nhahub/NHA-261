@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using STOCKUPMVC.Models;
 using STOCKUPMVC.Models.ViewModels;
 using STOCKUPMVC.Data.Repositories;
+using System.Transactions;
 
 namespace STOCKUPMVC.Controllers
 {
@@ -139,60 +138,123 @@ namespace STOCKUPMVC.Controllers
                 return View(model);
             }
 
-            // Create customer using your existing Customer model
-            var customer = new Customer
+            try
             {
-                Name = model.CustomerName,
-                Email = model.Email,
-                Phone = model.Phone,
-                Address = model.Address
-            };
-
-            await _unitOfWork.Customers.AddAsync(customer);
-            await _unitOfWork.CompleteAsync();
-
-            // Create sales order using your existing SalesOrder model
-            var salesOrder = new SalesOrder
-            {
-                CustomerID = customer.CustomerID,
-                WarehouseID = 1, // Default warehouse
-                OrderDate = DateTime.Now,
-                Status = "Pending",
-                TotalAmount = cart.Total,
-                OrderItems = cart.Items.Select(item => new OrderItem
+                // Verify all products still exist and are valid
+                foreach (var item in cart.Items)
                 {
-                    ProductID = item.ProductId,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.Price
-                }).ToList()
-            };
+                    var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId);
+                    if (product == null)
+                    {
+                        TempData["Error"] = $"Product '{item.ProductName}' is no longer available.";
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
 
-            await _unitOfWork.SalesOrders.AddAsync(salesOrder);
-            await _unitOfWork.CompleteAsync();
+                // Get or create default warehouse
+                var warehouses = await _unitOfWork.Warehouses.GetAllAsync();
+                int warehouseId;
+                
+                if (!warehouses.Any())
+                {
+                    // Create default warehouse if none exists
+                    var defaultWarehouse = new Warehouse 
+                    { 
+                        Name = "Main Warehouse", 
+                        Location = "Default Location" 
+                    };
+                    await _unitOfWork.Warehouses.AddAsync(defaultWarehouse);
+                    await _unitOfWork.CompleteAsync();
+                    warehouseId = defaultWarehouse.WarehouseID;
+                }
+                else
+                {
+                    warehouseId = warehouses.First().WarehouseID;
+                }
 
-            // Clear cart
-            HttpContext.Session.Remove(CartSessionKey);
+                // Create customer
+                var customer = new Customer
+                {
+                    Name = model.CustomerName,
+                    Email = model.Email,
+                    Phone = model.Phone,
+                    Address = model.Address
+                };
 
-            TempData["Success"] = $"Order #{salesOrder.OrderID} placed successfully!";
-            return RedirectToAction("OrderConfirmation", new { orderId = salesOrder.OrderID });
+                await _unitOfWork.Customers.AddAsync(customer);
+                await _unitOfWork.CompleteAsync();
+
+                // Create sales order
+                var salesOrder = new SalesOrder
+                {
+                    CustomerID = customer.CustomerID,
+                    WarehouseID = warehouseId,
+                    OrderDate = DateTime.Now,
+                    Status = "Pending",
+                    TotalAmount = cart.Total,
+                    OrderItems = cart.Items.Select(item => new OrderItem
+                    {
+                        ProductID = item.ProductId,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.Price
+                    }).ToList()
+                };
+
+                await _unitOfWork.SalesOrders.AddAsync(salesOrder);
+                await _unitOfWork.CompleteAsync();
+
+                // Clear cart
+                HttpContext.Session.Remove(CartSessionKey);
+
+                TempData["Success"] = $"Order #{salesOrder.OrderID} placed successfully!";
+                return RedirectToAction("OrderConfirmation", new { orderId = salesOrder.OrderID });
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Log the specific database error
+                var innerMessage = dbEx.InnerException?.Message ?? dbEx.Message;
+                System.Diagnostics.Debug.WriteLine($"DATABASE ERROR: {innerMessage}");
+                
+                TempData["Error"] = "A database error occurred while processing your order. Please try again.";
+                ViewBag.CartTotal = cart.Total;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                // Log general errors
+                System.Diagnostics.Debug.WriteLine($"CHECKOUT ERROR: {ex.Message}");
+                TempData["Error"] = "An unexpected error occurred while processing your order. Please try again.";
+                ViewBag.CartTotal = cart.Total;
+                return View(model);
+            }
         }
 
         // GET: /Cart/OrderConfirmation
         public async Task<IActionResult> OrderConfirmation(int orderId)
         {
-            var order = await _unitOfWork.SalesOrders
-                .GetAllQueryable()
-                .Include(so => so.Customer)
-                .Include(so => so.OrderItems)
-                .ThenInclude(oi => oi.Product)
-                .FirstOrDefaultAsync(so => so.OrderID == orderId);
-
-            if (order == null)
+            try
             {
-                return NotFound();
-            }
+                var order = await _unitOfWork.SalesOrders
+                    .GetAllQueryable()
+                    .Include(so => so.Customer)
+                    .Include(so => so.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                    .FirstOrDefaultAsync(so => so.OrderID == orderId);
 
-            return View(order);
+                if (order == null)
+                {
+                    TempData["Error"] = "Order not found.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return View(order);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ORDER CONFIRMATION ERROR: {ex.Message}");
+                TempData["Error"] = "Error loading order confirmation.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // Helper methods for session management

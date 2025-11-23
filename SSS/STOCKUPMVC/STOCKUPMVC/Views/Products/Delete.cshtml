@@ -19,7 +19,7 @@
     </dl>
 
     <form asp-action="DeleteConfirmed" method="post">
-        <input type="hidden" asp-for="Product.ProductID" />
+        <input type="hidden" name="id" value="@Model.Product.ProductID" />      
         <button type="submit" class="btn btn-danger">Delete</button>
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </form>

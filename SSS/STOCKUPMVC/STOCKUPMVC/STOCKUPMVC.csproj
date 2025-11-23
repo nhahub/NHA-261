@@ -20,6 +20,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\SalesOrder\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\Products\" />
     <Folder Include="wwwroot\js\" />
