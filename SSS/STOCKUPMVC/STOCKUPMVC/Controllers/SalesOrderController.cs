@@ -122,29 +122,46 @@ namespace STOCKUPMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(SalesOrderEditViewModel vm)
         {
+            // Debug errors
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            {
+                Console.WriteLine("MODEL ERROR: " + error.ErrorMessage);
+            }
+
             if (!ModelState.IsValid)
             {
                 var warehouses = await _unitOfWork.Warehouses.GetAllAsync();
                 var statuses = new[] { "Pending", "Confirmed", "Shipped", "Delivered", "Cancelled" };
+
                 vm.WarehouseList = new SelectList(warehouses, "WarehouseID", "Name", vm.WarehouseID);
                 vm.StatusList = new SelectList(statuses, vm.Status);
+
+                vm.Items = _unitOfWork.OrderItems
+                    .GetAllQueryable()
+                    .Where(oi => oi.OrderID == vm.OrderID)
+                    .Include(oi => oi.Product)
+                    .ToList();
+
                 return View(vm);
             }
 
-            var order = await _unitOfWork.SalesOrders.GetByIdAsync(vm.OrderID);
-            if (order == null) return NotFound();
+            var order = await _unitOfWork.SalesOrders
+                .GetAllQueryable()
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.OrderID == vm.OrderID);
+
+            if (order == null)
+                return NotFound();
 
             order.WarehouseID = vm.WarehouseID;
             order.Status = vm.Status;
 
-            // Optional: update quantities if Items changed
-            // foreach(var item in vm.Items) { ... }
-
-            _unitOfWork.SalesOrders.Update(order);
             await _unitOfWork.CompleteAsync();
 
             return RedirectToAction(nameof(List));
         }
+
+
 
         // GET: SalesOrder/Delete/5
         public async Task<IActionResult> Delete(int id)

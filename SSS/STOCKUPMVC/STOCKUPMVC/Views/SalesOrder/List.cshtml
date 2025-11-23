@@ -7,21 +7,25 @@
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="List" method="get" class="row mb-3">
+
     <div class="col-md-3">
-        <select asp-for="SelectedCustomerId" asp-items="Model.Customers" class="form-control">
+        <select name="customerId" class="form-control" asp-items="Model.Customers">
             <option value="">All Customers</option>
         </select>
     </div>
+
     <div class="col-md-3">
-        <select asp-for="SelectedWarehouseId" asp-items="Model.Warehouses" class="form-control">
+        <select name="warehouseId" class="form-control" asp-items="Model.Warehouses">
             <option value="">All Warehouses</option>
         </select>
     </div>
+
     <div class="col-md-3">
-        <select asp-for="SelectedStatus" asp-items="Model.Statuses" class="form-control">
+        <select name="status" class="form-control" asp-items="Model.Statuses">
             <option value="">All Statuses</option>
         </select>
     </div>
+
     <div class="col-md-3">
         <button type="submit" class="btn btn-primary w-100">Filter</button>
     </div>
@@ -39,6 +43,7 @@
             <th>Actions</th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var order in Model.Orders)
         {

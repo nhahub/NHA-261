@@ -18,7 +18,7 @@
     <strong>Status:</strong> @Model.Status <br />
 </div>
 
-<form asp-action="DeleteConfirmed" method="post">
+<form asp-action="Delete" method="post">
     <input type="hidden" asp-for="OrderID" />
     <button type="submit" class="btn btn-danger">Cancel Order</button>
     <a asp-action="List" class="btn btn-secondary">Back to List</a>

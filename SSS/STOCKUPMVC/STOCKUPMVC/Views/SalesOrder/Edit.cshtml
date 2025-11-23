@@ -25,9 +25,9 @@
         <thead class="table-dark">
             <tr>
                 <th>Product</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Subtotal</th>
+                <th class="text-end">Qty</th>
+                <th class="text-end">Unit Price</th>
+                <th class="text-end">Subtotal</th>
             </tr>
         </thead>
         <tbody>
@@ -35,9 +35,9 @@
             {
                 <tr>
                     <td>@item.Product.Name</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.UnitPrice.ToString("C")</td>
-                    <td>@(item.Quantity* item.UnitPrice).ToString("C")</td>
+                    <td class="text-end">@item.Quantity</td>
+                    <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                    <td class="text-end">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
                 </tr>
             }
         </tbody>
