@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Worker Dashboard";
 }
@@ -20,7 +15,7 @@
 
     <!-- Quick Stats -->
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card stat-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="icon-wrapper mb-3">
@@ -34,29 +29,43 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card stat-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="icon-wrapper mb-3">
                         <i class="fas fa-shopping-cart fa-3x"></i>
                     </div>
                     <h5 class="card-title">Sales Orders</h5>
-                    <p class="text-muted mb-3">Track customer orders</p>
+                    <p class="text-muted mb-3">Process customer orders</p>
                     <a asp-controller="SalesOrder" asp-action="List" class="btn btn-warning btn-sm">View Orders</a>
                 </div>
                 <div class="card-glow"></div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card stat-card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper mb-3">
+                        <i class="fas fa-truck fa-3x"></i>
+                    </div>
+                    <h5 class="card-title">Purchase Orders</h5>
+                    <p class="text-muted mb-3">View supplier orders</p>
+                    <a asp-controller="PurchaseOrder" asp-action="List" class="btn btn-info btn-sm">View Orders</a>
+                </div>
+                <div class="card-glow"></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
             <div class="card stat-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="icon-wrapper mb-3">
                         <i class="fas fa-exchange-alt fa-3x"></i>
                     </div>
                     <h5 class="card-title">Stock Movements</h5>
-                    <p class="text-muted mb-3">Track item movements</p>
-                    <a asp-controller="StockMovement" asp-action="List" class="btn btn-info btn-sm">View Logs</a>
+                    <p class="text-muted mb-3">Track item transfers</p>
+                    <a asp-controller="StockMovement" asp-action="Index" class="btn btn-success btn-sm">View Logs</a>
                 </div>
                 <div class="card-glow"></div>
             </div>
@@ -74,33 +83,13 @@
                 </div>
                 <div class="card-body">
                     <div class="action-grid">
-                        <a asp-controller="Inventory" asp-action="Create" class="action-item">
-                            <div class="action-icon">
-                                <i class="fas fa-plus-circle"></i>
-                            </div>
-                            <div class="action-content">
-                                <h6>Update Inventory</h6>
-                                <small class="text-muted">Adjust stock levels</small>
-                            </div>
-                        </a>
-
-                        <a asp-controller="StockMovement" asp-action="Create" class="action-item">
-                            <div class="action-icon">
-                                <i class="fas fa-clipboard-list"></i>
-                            </div>
-                            <div class="action-content">
-                                <h6>Record Movement</h6>
-                                <small class="text-muted">Log stock transfers</small>
-                            </div>
-                        </a>
-
                         <a asp-controller="Inventory" asp-action="List" class="action-item">
                             <div class="action-icon">
                                 <i class="fas fa-search"></i>
                             </div>
                             <div class="action-content">
                                 <h6>Check Inventory</h6>
-                                <small class="text-muted">View current stock</small>
+                                <small class="text-muted">View current stock levels</small>
                             </div>
                         </a>
 
@@ -109,8 +98,28 @@
                                 <i class="fas fa-list-alt"></i>
                             </div>
                             <div class="action-content">
-                                <h6>View Orders</h6>
-                                <small class="text-muted">Check sales orders</small>
+                                <h6>Process Orders</h6>
+                                <small class="text-muted">Manage customer orders</small>
+                            </div>
+                        </a>
+
+                        <a asp-controller="PurchaseOrder" asp-action="List" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="action-content">
+                                <h6>View Purchases</h6>
+                                <small class="text-muted">Check supplier orders</small>
+                            </div>
+                        </a>
+
+                        <a asp-controller="StockMovement" asp-action="Index" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div class="action-content">
+                                <h6>Stock Movements</h6>
+                                <small class="text-muted">Track inventory transfers</small>
                             </div>
                         </a>
                     </div>
@@ -122,35 +131,44 @@
             <div class="card modern-card shadow-sm">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="fas fa-info-circle me-2"></i>System Status
+                        <i class="fas fa-info-circle me-2"></i>Worker Permissions
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="status-item">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="status-label">
-                                <i class="fas fa-circle text-success me-2"></i>
-                                System Online
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                View Products
                             </span>
-                            <span class="badge bg-success">Active</span>
+                            <span class="badge bg-success">Allowed</span>
                         </div>
                     </div>
                     <div class="status-item">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="status-label">
-                                <i class="fas fa-circle text-success me-2"></i>
-                                Database Connected
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Process Sales
                             </span>
-                            <span class="badge bg-success">OK</span>
+                            <span class="badge bg-success">Allowed</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="status-label">
+                                <i class="fas fa-times-circle text-secondary me-2"></i>
+                                Create Products
+                            </span>
+                            <span class="badge bg-secondary">Admin Only</span>
                         </div>
                     </div>
                     <div class="status-item">
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="status-label">
-                                <i class="fas fa-circle text-info me-2"></i>
-                                Last Sync
+                                <i class="fas fa-times-circle text-secondary me-2"></i>
+                                Create Purchases
                             </span>
-                            <span class="badge bg-info">Just now</span>
+                            <span class="badge bg-secondary">Admin Only</span>
                         </div>
                     </div>
                 </div>
@@ -307,19 +325,8 @@
     }
 
         .status-label i {
-            font-size: 0.5rem;
-            animation: pulse 2s ease-in-out infinite;
+            font-size: 0.8rem;
         }
-
-    @@keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0.5;
-        }
-    }
 
     .btn {
         border-radius: 8px;

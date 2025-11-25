@@ -112,7 +112,7 @@ namespace STOCKUPMVC.Controllers
         }
 
         // GET: Create
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync();
@@ -155,7 +155,7 @@ namespace STOCKUPMVC.Controllers
         }
 
         // GET: Edit
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id);
