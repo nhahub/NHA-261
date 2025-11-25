@@ -382,6 +382,10 @@ namespace STOCKUPMVC.Migrations
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SupplierID")
                         .HasColumnType("int");
 
@@ -435,24 +439,20 @@ namespace STOCKUPMVC.Migrations
 
             modelBuilder.Entity("STOCKUPMVC.Models.StockMovement", b =>
                 {
-                    b.Property<int>("MovementID")
+                    b.Property<int>("StockMovementID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockMovementID"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<int?>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromWarehouseID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("MovementTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FromWarehouseID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MovementType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
@@ -460,12 +460,12 @@ namespace STOCKUPMVC.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ToWarehouseID")
+                    b.Property<int>("ToWarehouseID")
                         .HasColumnType("int");
 
-                    b.HasKey("MovementID");
+                    b.HasKey("StockMovementID");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("FromWarehouseID");
 
@@ -694,16 +694,15 @@ namespace STOCKUPMVC.Migrations
 
             modelBuilder.Entity("STOCKUPMVC.Models.StockMovement", b =>
                 {
-                    b.HasOne("STOCKUPMVC.Models.ApplicationUser", "CreatedBy")
+                    b.HasOne("STOCKUPMVC.Models.ApplicationUser", null)
                         .WithMany("CreatedStockMovements")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("STOCKUPMVC.Models.Warehouse", "FromWarehouse")
                         .WithMany("FromMovements")
                         .HasForeignKey("FromWarehouseID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("STOCKUPMVC.Models.Product", "Product")
                         .WithMany("StockMovements")
@@ -714,9 +713,8 @@ namespace STOCKUPMVC.Migrations
                     b.HasOne("STOCKUPMVC.Models.Warehouse", "ToWarehouse")
                         .WithMany("ToMovements")
                         .HasForeignKey("ToWarehouseID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedBy");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("FromWarehouse");
 

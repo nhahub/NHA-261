@@ -1,0 +1,36 @@
+﻿@model IEnumerable<STOCKUPMVC.ViewModels.StockMovementListItemVMM>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Stock Movements";
+}
+
+<h2>Stock Movements</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Add New Movement</a>
+
+<table class="table table-bordered table-striped mt-2">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Product</th>
+            <th>From Warehouse</th>
+            <th>To Warehouse</th>
+            <th>Quantity</th>
+            <th>Movement Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sm in Model)
+        {
+            <tr>
+                <td>@sm.StockMovementID</td>
+                <td>@sm.ProductName</td>
+                <td>@sm.FromWarehouseName</td>
+                <td>@sm.ToWarehouseName</td>
+                <td>@sm.Quantity</td>
+                <td>@sm.MovementTime.ToString("yyyy-MM-dd HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

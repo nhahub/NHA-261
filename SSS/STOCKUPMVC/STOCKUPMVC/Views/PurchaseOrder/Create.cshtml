@@ -1,0 +1,172 @@
+﻿@model STOCKUPMVC.ViewModels.PurchaseOrderCreateVMM
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Create Purchase Order";
+}
+
+<h2>Create Purchase Order</h2>
+
+<form asp-action="Create" method="post">
+
+    <!-- Supplier -->
+    <div class="form-group">
+        <label>Supplier</label>
+        <select asp-for="SupplierID" class="form-control" asp-items="ViewBag.Suppliers">
+            <option value="">-- Select Supplier --</option>
+        </select>
+    </div>
+
+    <!-- Warehouse -->
+    <div class="form-group mt-3">
+        <label>Warehouse</label>
+        <select asp-for="WarehouseID" class="form-control" asp-items="ViewBag.Warehouses">
+            <option value="">-- Select Warehouse --</option>
+        </select>
+        <span asp-validation-for="WarehouseID" class="text-danger"></span>
+    </div>
+
+    <hr />
+
+    <!-- Order Items Table -->
+    <table class="table" id="orderItemsTable">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <select name="OrderItems[0].CategoryID" class="form-control category-select">
+                        <option value="">--Select--</option>
+                        @foreach (var cat in ViewBag.Categories)
+                        {
+                            <option value="@cat.Value">@cat.Text</option>
+                        }
+                    </select>
+                </td>
+
+                <td>
+                    <select name="OrderItems[0].ProductID" class="form-control product-select">
+                        <option value="">--Select--</option>
+                    </select>
+                </td>
+
+                <td><input type="text" name="OrderItems[0].UnitPrice" class="form-control unit-price" readonly /></td>
+                <td><input type="number" name="OrderItems[0].Quantity" class="form-control quantity" value="1" min="1" /></td>
+                <td><input type="text" class="form-control total" readonly /></td>
+                <td><button type="button" class="btn btn-danger remove-row">X</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary" id="addRow">Add Item</button>
+
+    <div class="mt-3">
+        <label>Total PO Amount: </label>
+        <span id="poTotal">0</span>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Save</button>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            function recalcTotal(row) {
+                let qty = parseFloat(row.find(".quantity").val()) || 0;
+                let price = parseFloat(row.find(".unit-price").val()) || 0;
+                row.find(".total").val((qty * price).toFixed(2));
+                recalcPOTotal();
+            }
+
+            function recalcPOTotal() {
+                let total = 0;
+                $("#orderItemsTable tbody tr").each(function () {
+                    total += parseFloat($(this).find(".total").val()) || 0;
+                });
+                $("#poTotal").text(total.toFixed(2));
+            }
+
+            // Add row
+            $("#addRow").click(function () {
+                let rowCount = $("#orderItemsTable tbody tr").length;
+                let newRow = $("#orderItemsTable tbody tr:first").clone();
+
+                newRow.find("select, input").val('');
+
+                // Update name attributes with new index
+                newRow.find(".category-select").attr("name", `OrderItems[${rowCount}].CategoryID`);
+                newRow.find(".product-select").attr("name", `OrderItems[${rowCount}].ProductID`);
+                newRow.find(".unit-price").attr("name", `OrderItems[${rowCount}].UnitPrice`);
+                newRow.find(".quantity").attr("name", `OrderItems[${rowCount}].Quantity`);
+
+                $("#orderItemsTable tbody").append(newRow);
+            });
+
+            // Remove row
+            $(document).on("click", ".remove-row", function () {
+                if ($("#orderItemsTable tbody tr").length > 1)
+                    $(this).closest("tr").remove();
+
+                // Re-index remaining rows
+                $("#orderItemsTable tbody tr").each(function (index) {
+                    $(this).find(".category-select").attr("name", `OrderItems[${index}].CategoryID`);
+                    $(this).find(".product-select").attr("name", `OrderItems[${index}].ProductID`);
+                    $(this).find(".unit-price").attr("name", `OrderItems[${index}].UnitPrice`);
+                    $(this).find(".quantity").attr("name", `OrderItems[${index}].Quantity`);
+                });
+
+                recalcPOTotal();
+            });
+
+            // On Category Change → Load Products
+            $(document).on("change", ".category-select", function () {
+                let row = $(this).closest("tr");
+                let categoryId = $(this).val();
+
+                let productSelect = row.find(".product-select");
+                productSelect.empty().append('<option value="">--Select--</option>');
+
+                row.find(".unit-price").val('');
+                row.find(".total").val('');
+
+                if (categoryId) {
+                    $.getJSON('/PurchaseOrder/GetProductsByCategory', { categoryId: categoryId }, function (data) {
+                        $.each(data, function (i, product) {
+                            productSelect.append(
+                                `<option value="${product.productID}" data-price="${product.price}">${product.name}</option>`
+                            );
+                        });
+                    });
+                }
+            });
+
+            // Set Unit Price on Product Change
+            $(document).on("change", ".product-select", function () {
+                let row = $(this).closest("tr");
+                let price = $(this).find("option:selected").data("price") || 0;
+
+                row.find(".unit-price").val(price.toFixed(2));
+                recalcTotal(row);
+            });
+
+            // Qty change
+            $(document).on("input", ".quantity", function () {
+                let row = $(this).closest("tr");
+                recalcTotal(row);
+            });
+
+        });
+    </script>
+}

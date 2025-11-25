@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using STOCKUPMVC.Data.Repositories;
 using STOCKUPMVC.Models;
 using STOCKUPMVC.Models.ViewModels;
+using STOCKUPMVC.ViewModels;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,19 +33,49 @@ namespace STOCKUPMVC.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var roles = await _userManager.GetRolesAsync(user);
 
-                // Admin/Staff users go to AdminView
+                // Admin/Staff users go to Dashboard
                 if (roles.Contains("Admin") || roles.Contains("Staff"))
-                    return RedirectToAction("AdminView");
+                {
+                    return RedirectToAction("Dashboard");
+                }
             }
 
-            // All others (public or viewer) see UserView
-            return RedirectToAction("UserView");
+            // All others (public or viewer) see UserView with PRODUCT LIST
+            var productVm = await GetProductListViewModel(null, null, 1);
+            return View("UserView", productVm);
+        }
+
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> Dashboard()
+        {
+            var vm = new DashboardViewModel
+            {
+                ProductCount = await _unitOfWork.Products.CountAsync(),
+                WarehouseCount = await _unitOfWork.Warehouses.CountAsync(),
+                PendingSalesOrderCount = await _unitOfWork.SalesOrders.CountAsync(s => s.Status == "Pending"),
+                PendingPurchaseOrderCount = await _unitOfWork.PurchaseOrders.CountAsync(p => p.Status == "Pending"),
+                RecentSalesOrders = await _unitOfWork.SalesOrders
+                    .GetAllQueryable()
+                    .Include(so => so.Customer)
+                    .Include(so => so.OrderItems)
+                    .OrderByDescending(s => s.OrderDate)
+                    .Take(5)
+                    .ToListAsync(),
+                RecentPurchaseOrders = await _unitOfWork.PurchaseOrders
+                    .GetAllQueryable()
+                    .Include(po => po.Supplier)
+                    .Include(po => po.OrderItems)
+                    .OrderByDescending(p => p.OrderTime)
+                    .Take(5)
+                    .ToListAsync()
+            };
+
+            return View(vm);
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminView(string searchString, int? categoryId, int page = 1)
         {
-            // Load products for admin view
             var vm = await GetProductListViewModel(searchString, categoryId, page);
             return View(vm);
         }
@@ -51,7 +83,6 @@ namespace STOCKUPMVC.Controllers
         [Authorize(Roles = "Staff,Admin")]
         public async Task<IActionResult> WorkerView(string searchString, int? categoryId, int page = 1)
         {
-            // Load products for worker view
             var vm = await GetProductListViewModel(searchString, categoryId, page);
             return View(vm);
         }
@@ -59,7 +90,6 @@ namespace STOCKUPMVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UserView(string searchString, int? categoryId, int page = 1)
         {
-            // Load products for customer view
             var vm = await GetProductListViewModel(searchString, categoryId, page);
             return View(vm);
         }
@@ -69,7 +99,6 @@ namespace STOCKUPMVC.Controllers
             return View();
         }
 
-        // Helper method to load products (same logic as ProductsController)
         private async Task<ProductListViewModel> GetProductListViewModel(string searchString, int? categoryId, int page)
         {
             var query = _unitOfWork.Products
@@ -77,7 +106,6 @@ namespace STOCKUPMVC.Controllers
                 .Include(p => p.Category)
                 .AsQueryable();
 
-            // Search
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 query = query.Where(p =>
@@ -85,20 +113,17 @@ namespace STOCKUPMVC.Controllers
                     (p.SKU != null && p.SKU.Contains(searchString)));
             }
 
-            // Category filter
             if (categoryId.HasValue && categoryId.Value > 0)
             {
                 query = query.Where(p => p.CategoryID == categoryId.Value);
             }
 
-            // Pagination
             var totalItems = await query.CountAsync();
             var products = await query
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .ToListAsync();
 
-            // Categories for filter
             var categories = await _unitOfWork.Categories.GetAllAsync();
             var categoriesSelect = new SelectList(categories, "CategoryID", "Name", categoryId);
 

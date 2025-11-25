@@ -33,14 +33,16 @@ namespace STOCKUPMVC.Data
             builder.Entity<SupplierProduct>()
                 .HasKey(sp => new { sp.SupplierID, sp.ProductID });
 
-            // StockMovement creator
+            // REMOVE THIS BLOCK - StockMovement doesn't have CreatedBy
+            /*
             builder.Entity<StockMovement>()
                 .HasOne(m => m.CreatedBy)
                 .WithMany(u => u.CreatedStockMovements)
                 .HasForeignKey(m => m.CreatedById)
                 .OnDelete(DeleteBehavior.Restrict);
+            */
 
-            // Optional self references
+            // Optional self references - KEEP THESE (they match his model)
             builder.Entity<StockMovement>()
                 .HasOne(m => m.FromWarehouse)
                 .WithMany(w => w.FromMovements)

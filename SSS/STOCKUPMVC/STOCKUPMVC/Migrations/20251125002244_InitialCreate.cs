@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace STOCKUPMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class m1 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -117,7 +117,8 @@ namespace STOCKUPMVC.Migrations
                     SKU = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryID = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +173,8 @@ namespace STOCKUPMVC.Migrations
                     SupplierID = table.Column<int>(type: "int", nullable: false),
                     WarehouseID = table.Column<int>(type: "int", nullable: false),
                     OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -358,25 +360,23 @@ namespace STOCKUPMVC.Migrations
                 name: "StockMovements",
                 columns: table => new
                 {
-                    MovementID = table.Column<int>(type: "int", nullable: false)
+                    StockMovementID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<int>(type: "int", nullable: false),
-                    FromWarehouseID = table.Column<int>(type: "int", nullable: true),
-                    ToWarehouseID = table.Column<int>(type: "int", nullable: true),
-                    CreatedById = table.Column<int>(type: "int", nullable: false),
+                    FromWarehouseID = table.Column<int>(type: "int", nullable: false),
+                    ToWarehouseID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    MovementType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    MovementTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StockMovements", x => x.MovementID);
+                    table.PrimaryKey("PK_StockMovements", x => x.StockMovementID);
                     table.ForeignKey(
-                        name: "FK_StockMovements_AspNetUsers_CreatedById",
-                        column: x => x.CreatedById,
+                        name: "FK_StockMovements_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_StockMovements_Products_ProductID",
                         column: x => x.ProductID,
@@ -520,9 +520,9 @@ namespace STOCKUPMVC.Migrations
                 column: "WarehouseID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockMovements_CreatedById",
+                name: "IX_StockMovements_ApplicationUserId",
                 table: "StockMovements",
-                column: "CreatedById");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockMovements_FromWarehouseID",

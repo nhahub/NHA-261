@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using STOCKUPMVC.Data.Repositories;
 using STOCKUPMVC.Models;
 using STOCKUPMVC.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -97,6 +99,8 @@ namespace STOCKUPMVC.Controllers
             var order = await _unitOfWork.SalesOrders.GetAllQueryable()
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
+                .Include(o => o.Customer)
+                .Include(o => o.Warehouse)
                 .FirstOrDefaultAsync(o => o.OrderID == id);
 
             if (order == null) return NotFound();
@@ -109,7 +113,7 @@ namespace STOCKUPMVC.Controllers
                 OrderID = order.OrderID,
                 WarehouseID = order.WarehouseID,
                 Status = order.Status,
-                Items = order.OrderItems.ToList(),
+                Items = order.OrderItems?.ToList() ?? new List<OrderItem>(),
                 WarehouseList = new SelectList(warehouses, "WarehouseID", "Name", order.WarehouseID),
                 StatusList = new SelectList(statuses, order.Status)
             };
@@ -120,48 +124,200 @@ namespace STOCKUPMVC.Controllers
         // POST: SalesOrder/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SalesOrderEditViewModel vm)
+        public async Task<IActionResult> Edit(int id, SalesOrderEditViewModel vm)
         {
-            // Debug errors
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            if (id != vm.OrderID)
             {
-                Console.WriteLine("MODEL ERROR: " + error.ErrorMessage);
+                return NotFound();
             }
 
             if (!ModelState.IsValid)
             {
-                var warehouses = await _unitOfWork.Warehouses.GetAllAsync();
-                var statuses = new[] { "Pending", "Confirmed", "Shipped", "Delivered", "Cancelled" };
-
-                vm.WarehouseList = new SelectList(warehouses, "WarehouseID", "Name", vm.WarehouseID);
-                vm.StatusList = new SelectList(statuses, vm.Status);
-
-                vm.Items = _unitOfWork.OrderItems
-                    .GetAllQueryable()
-                    .Where(oi => oi.OrderID == vm.OrderID)
-                    .Include(oi => oi.Product)
-                    .ToList();
-
+                await RepopulateViewModel(vm);
                 return View(vm);
             }
 
-            var order = await _unitOfWork.SalesOrders
-                .GetAllQueryable()
-                .Include(o => o.OrderItems)
-                .FirstOrDefaultAsync(o => o.OrderID == vm.OrderID);
+            try
+            {
+                // Get existing order with tracking
+                var existingOrder = await _unitOfWork.SalesOrders.GetAllQueryable()
+                    .Include(o => o.OrderItems)
+                    .FirstOrDefaultAsync(o => o.OrderID == id);
 
-            if (order == null)
-                return NotFound();
+                if (existingOrder == null)
+                {
+                    return NotFound();
+                }
 
-            order.WarehouseID = vm.WarehouseID;
-            order.Status = vm.Status;
+                // Store old status for inventory logic
+                var oldStatus = existingOrder.Status;
+                var newStatus = vm.Status;
 
-            await _unitOfWork.CompleteAsync();
+                // Validate status transition
+                if (!IsValidStatusTransition(oldStatus, newStatus))
+                {
+                    ModelState.AddModelError("Status", $"Invalid status transition from {oldStatus} to {newStatus}.");
+                    await RepopulateViewModel(vm);
+                    return View(vm);
+                }
 
-            return RedirectToAction(nameof(List));
+                // Check inventory before confirming order
+                if (oldStatus != "Confirmed" && newStatus == "Confirmed")
+                {
+                    var inventoryCheck = await CheckInventoryAvailability(existingOrder.OrderItems.ToList(), vm.WarehouseID);
+                    if (!inventoryCheck.IsAvailable)
+                    {
+                        ModelState.AddModelError("", inventoryCheck.ErrorMessage);
+                        await RepopulateViewModel(vm);
+                        return View(vm);
+                    }
+                }
+
+                // Update order properties
+                existingOrder.WarehouseID = vm.WarehouseID;
+                existingOrder.Status = newStatus;
+                existingOrder.TotalAmount = existingOrder.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
+                // Handle inventory updates based on status changes
+                await HandleInventoryUpdates(existingOrder, oldStatus, newStatus);
+
+                _unitOfWork.SalesOrders.Update(existingOrder);
+                var result = await _unitOfWork.CompleteAsync();
+
+                if (result > 0)
+                {
+                    TempData["SuccessMessage"] = $"Order #{id} updated successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No changes were made to the order.";
+                }
+
+                return RedirectToAction(nameof(List));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating order: {ex.Message}");
+                ModelState.AddModelError("", "An error occurred while updating the order. Please try again.");
+                await RepopulateViewModel(vm);
+                return View(vm);
+            }
         }
 
+        // Helper method to validate status transitions
+        private bool IsValidStatusTransition(string oldStatus, string newStatus)
+        {
+            var allowedTransitions = new Dictionary<string, List<string>>
+            {
+                { "Pending", new List<string> { "Confirmed", "Cancelled" } },
+                { "Confirmed", new List<string> { "Shipped", "Cancelled" } },
+                { "Shipped", new List<string> { "Delivered" } },
+                { "Delivered", new List<string> { } }, // No transitions from Delivered
+                { "Cancelled", new List<string> { } }  // No transitions from Cancelled
+            };
 
+            return allowedTransitions.ContainsKey(oldStatus) &&
+                   allowedTransitions[oldStatus].Contains(newStatus);
+        }
+
+        // Helper method to check inventory availability
+        private async Task<(bool IsAvailable, string ErrorMessage)> CheckInventoryAvailability(List<OrderItem> orderItems, int warehouseId)
+        {
+            foreach (var item in orderItems)
+            {
+                var inventory = (await _unitOfWork.Inventories
+                    .FindAsync(inv => inv.ProductID == item.ProductID && inv.WarehouseID == warehouseId))
+                    .FirstOrDefault();
+
+                var availableQuantity = inventory?.Quantity ?? 0;
+
+                if (availableQuantity < item.Quantity)
+                {
+                    var product = await _unitOfWork.Products.GetByIdAsync(item.ProductID);
+                    return (false, $"Not enough inventory for {product?.Name}. Available: {availableQuantity}, Requested: {item.Quantity}");
+                }
+            }
+
+            return (true, string.Empty);
+        }
+
+        // Helper method to handle inventory updates based on status changes
+        private async Task HandleInventoryUpdates(SalesOrder order, string oldStatus, string newStatus)
+        {
+            // Pending → Confirmed: Decrease inventory (reserve stock)
+            if (oldStatus != "Confirmed" && newStatus == "Confirmed")
+            {
+                await UpdateInventory(order.OrderItems.ToList(), order.WarehouseID, false); // Decrease
+            }
+            // Confirmed → Cancelled: Restore inventory
+            else if (oldStatus == "Confirmed" && newStatus == "Cancelled")
+            {
+                await UpdateInventory(order.OrderItems.ToList(), order.WarehouseID, true); // Increase
+            }
+            // Shipped/Delivered: No inventory changes (already deducted at Confirmed)
+            // Other transitions: No inventory changes
+        }
+
+        // Helper method to update inventory (increase or decrease)
+        private async Task UpdateInventory(List<OrderItem> orderItems, int warehouseId, bool increase)
+        {
+            foreach (var item in orderItems)
+            {
+                // Find existing inventory record
+                var inventory = (await _unitOfWork.Inventories
+                    .FindAsync(inv => inv.ProductID == item.ProductID && inv.WarehouseID == warehouseId))
+                    .FirstOrDefault();
+
+                if (inventory != null)
+                {
+                    // Update existing inventory
+                    if (increase)
+                    {
+                        inventory.Quantity += item.Quantity; // Restore stock
+                    }
+                    else
+                    {
+                        inventory.Quantity -= item.Quantity; // Reserve stock
+                    }
+                    _unitOfWork.Inventories.Update(inventory);
+                }
+                else if (!increase)
+                {
+                    // Create new inventory record with negative quantity (shouldn't happen if we checked availability)
+                    await _unitOfWork.Inventories.AddAsync(new Inventory
+                    {
+                        ProductID = item.ProductID,
+                        WarehouseID = warehouseId,
+                        Quantity = -item.Quantity
+                    });
+                }
+                // Note: If increasing but inventory doesn't exist, it means the product was removed - we skip
+            }
+        }
+
+        // Helper method to repopulate view model data
+        private async Task RepopulateViewModel(SalesOrderEditViewModel vm)
+        {
+            var warehouses = await _unitOfWork.Warehouses.GetAllAsync();
+            var statuses = new[] { "Pending", "Confirmed", "Shipped", "Delivered", "Cancelled" };
+
+            vm.WarehouseList = new SelectList(warehouses, "WarehouseID", "Name", vm.WarehouseID);
+            vm.StatusList = new SelectList(statuses, vm.Status);
+
+            if (vm.Items == null || !vm.Items.Any())
+            {
+                var orderWithItems = await _unitOfWork.SalesOrders.GetAllQueryable()
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.Product)
+                    .FirstOrDefaultAsync(o => o.OrderID == vm.OrderID);
+                vm.Items = orderWithItems?.OrderItems.ToList() ?? new List<OrderItem>();
+            }
+        }
+
+        private async Task<bool> OrderExists(int id)
+        {
+            return await _unitOfWork.SalesOrders.GetByIdAsync(id) != null;
+        }
 
         // GET: SalesOrder/Delete/5
         public async Task<IActionResult> Delete(int id)
@@ -184,11 +340,31 @@ namespace STOCKUPMVC.Controllers
             var order = await _unitOfWork.SalesOrders.GetByIdAsync(id);
             if (order == null) return NotFound();
 
-            // Soft delete: mark as Cancelled
+            // Only allow cancellation if order is not already delivered
+            if (order.Status == "Delivered")
+            {
+                TempData["ErrorMessage"] = "Cannot cancel a delivered order.";
+                return RedirectToAction(nameof(List));
+            }
+
+            // If order was confirmed, restore inventory before cancelling
+            if (order.Status == "Confirmed")
+            {
+                var orderWithItems = await _unitOfWork.SalesOrders.GetAllQueryable()
+                    .Include(o => o.OrderItems)
+                    .FirstOrDefaultAsync(o => o.OrderID == id);
+
+                if (orderWithItems != null)
+                {
+                    await UpdateInventory(orderWithItems.OrderItems.ToList(), order.WarehouseID, true);
+                }
+            }
+
             order.Status = "Cancelled";
             _unitOfWork.SalesOrders.Update(order);
             await _unitOfWork.CompleteAsync();
 
+            TempData["SuccessMessage"] = $"Order #{id} has been cancelled.";
             return RedirectToAction(nameof(List));
         }
     }

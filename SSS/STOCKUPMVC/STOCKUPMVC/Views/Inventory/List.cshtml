@@ -12,17 +12,16 @@
 
     <!-- Filter Form -->
     <form asp-action="List" method="get" class="d-flex">
-        <select asp-for="SelectedProductId" asp-items="Model.Products" class="form-select me-2">
+        <select name="productId" asp-items="Model.Products" class="form-select me-2">
             <option value="">All Products</option>
         </select>
-
-        <select asp-for="SelectedWarehouseId" asp-items="Model.Warehouses" class="form-select me-2">
+        <select name="warehouseId" asp-items="Model.Warehouses" class="form-select me-2">
             <option value="">All Warehouses</option>
         </select>
-
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
 </div>
+
 
 <table class="table table-bordered table-striped mt-2">
     <thead class="table-dark">

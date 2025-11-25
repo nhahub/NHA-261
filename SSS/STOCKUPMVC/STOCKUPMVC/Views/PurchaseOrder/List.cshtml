@@ -1,0 +1,41 @@
+﻿@model STOCKUPMVC.ViewModels.PurchaseOrderListViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Purchase Orders";
+}
+
+<h2>Purchase Orders</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Create New Purchase Order</a>
+
+<table class="table table-bordered table-striped mt-2">
+    <thead class="table-dark">
+        <tr>
+            <th>POID</th>
+            <th>Supplier</th>
+            <th>Warehouse</th>
+            <th>Status</th>
+            <th>Total Amount</th>
+            <th>Order Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var po in Model.PurchaseOrders)
+        {
+            <tr>
+                <td>@po.POID</td>
+                <td>@po.SupplierName</td>
+                <td>@po.WarehouseName</td>
+                <td>@po.Status</td>
+                <td>@po.TotalAmount.ToString("C")</td>
+                <td>@po.OrderTime.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@po.POID">Details</a>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@po.POID">update</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@po.POID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

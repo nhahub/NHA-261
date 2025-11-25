@@ -19,26 +19,22 @@ namespace STOCKUPMVC.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        // GET: Inventory/List
-        // GET: Inventory/List
         public async Task<IActionResult> List(int? productId, int? warehouseId)
         {
-            // Get filtered inventories
             var inventoriesQuery = _unitOfWork.Inventories
                 .GetAllQueryable()
                 .Include(i => i.Product)
                 .Include(i => i.Warehouse)
                 .AsQueryable();
 
-            if (productId.HasValue)
+            if (productId.HasValue && productId.Value > 0)
                 inventoriesQuery = inventoriesQuery.Where(i => i.ProductID == productId.Value);
 
-            if (warehouseId.HasValue)
+            if (warehouseId.HasValue && warehouseId.Value > 0)
                 inventoriesQuery = inventoriesQuery.Where(i => i.WarehouseID == warehouseId.Value);
 
             var inventories = await inventoriesQuery.ToListAsync();
 
-            // Prepare dropdowns
             var products = await _unitOfWork.Products.GetAllAsync();
             var warehouses = await _unitOfWork.Warehouses.GetAllAsync();
 
@@ -53,6 +49,7 @@ namespace STOCKUPMVC.Controllers
 
             return View(viewModel);
         }
+
 
 
 

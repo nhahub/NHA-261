@@ -7,27 +7,22 @@ namespace STOCKUPMVC.Models
     public class StockMovement
     {
         [Key]
-        public int MovementID { get; set; }
+        public int StockMovementID { get; set; }
 
         [ForeignKey("Product")]
         public int ProductID { get; set; }
 
         [ForeignKey("FromWarehouse")]
-        public int? FromWarehouseID { get; set; }
+        public int FromWarehouseID { get; set; }
 
         [ForeignKey("ToWarehouse")]
-        public int? ToWarehouseID { get; set; }
-
-        [ForeignKey("CreatedBy")]
-        public int CreatedById { get; set; }
+        public int ToWarehouseID { get; set; }
 
         public int Quantity { get; set; }
-        public string MovementType { get; set; } // e.g. "IN", "OUT", "TRANSFER"
-        public DateTime CreatedAt { get; set; }
+        public DateTime MovementTime { get; set; } = DateTime.Now;
 
         public Product Product { get; set; }
         public Warehouse FromWarehouse { get; set; }
         public Warehouse ToWarehouse { get; set; }
-        public ApplicationUser CreatedBy { get; set; }
     }
 }
