@@ -6,17 +6,19 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-12">
-            <h2>Dashboard</h2>
-            <p class="text-muted">Welcome to your warehouse management dashboard</p>
+            <div class="page-header">
+                <h2 class="mb-2">Dashboard</h2>
+                <p class="text-muted mb-0">Welcome to your warehouse management dashboard</p>
+            </div>
         </div>
     </div>
 
     <!-- Statistics Cards -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card bg-primary text-white">
+            <div class="card stat-card bg-primary text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -28,11 +30,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-accent"></div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card bg-success text-white">
+            <div class="card stat-card bg-success text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -44,11 +47,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-accent"></div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card bg-warning text-dark">
+            <div class="card stat-card bg-warning text-dark">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -60,11 +64,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-accent"></div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card bg-info text-white">
+            <div class="card stat-card bg-info text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -76,6 +81,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-accent"></div>
             </div>
         </div>
     </div>
@@ -84,7 +90,7 @@
     <div class="row">
         <!-- Recent Sales Orders -->
         <div class="col-md-6">
-            <div class="card">
+            <div class="card modern-card">
                 <div class="card-header bg-primary text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-shopping-cart me-2"></i>Recent Sales Orders
@@ -111,9 +117,9 @@
                                             <td>@order.Customer?.Name</td>
                                             <td>
                                                 <span class="badge @(order.Status == "Pending" ? "bg-warning" :
-                                                                                                                    order.Status == "Confirmed" ? "bg-info" :
-                                                                                                                    order.Status == "Shipped" ? "bg-primary" :
-                                                                                                                    order.Status == "Delivered" ? "bg-success" : "bg-secondary")">
+                                                                                                                                                                          order.Status == "Confirmed" ? "bg-info" :
+                                                                                                                                                                          order.Status == "Shipped" ? "bg-primary" :
+                                                                                                                                                                          order.Status == "Delivered" ? "bg-success" : "bg-secondary")">
                                             @order.Status
                                         </span>
                                     </td>
@@ -135,7 +141,7 @@
 
         <!-- Recent Purchase Orders -->
         <div class="col-md-6">
-            <div class="card">
+            <div class="card modern-card">
                 <div class="card-header bg-success text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-truck me-2"></i>Recent Purchase Orders
@@ -162,8 +168,8 @@
                                             <td>@order.Supplier?.Name</td>
                                             <td>
                                                 <span class="badge @(order.Status == "Pending" ? "bg-warning" :
-                                                                                                                    order.Status == "Approved" ? "bg-info" :
-                                                                                                                    order.Status == "Completed" ? "bg-success" : "bg-secondary")">
+                                                                                                                                                                          order.Status == "Approved" ? "bg-info" :
+                                                                                                                                                                          order.Status == "Completed" ? "bg-success" : "bg-secondary")">
                                             @order.Status
                                         </span>
                                     </td>
@@ -187,7 +193,7 @@
     <!-- Quick Actions -->
     <div class="row mt-4">
         <div class="col-12">
-            <div class="card">
+            <div class="card modern-card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Quick Actions</h5>
                 </div>
@@ -215,15 +221,173 @@
 @section Styles {
     <style>
         .card {
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
             .card:hover {
-                transform: translateY(-2px);
+                transform: translateY(-4px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
             }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+                animation: pulse 4s ease-in-out infinite;
+            }
+
+        @@keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .stat-card .card-body {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-accent {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+            animation: shimmer 2s infinite;
+        }
+
+        @@keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .modern-card {
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+            .modern-card .card-header {
+                border-bottom: none;
+                padding: 1.25rem 1.5rem;
+                position: relative;
+            }
+
+                .modern-card .card-header::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 1.5rem;
+                    right: 1.5rem;
+                    height: 1px;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                }
 
         .badge {
             font-size: 0.75em;
+            padding: 0.35em 0.65em;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .table-hover tbody tr {
+            transition: all 0.2s ease;
+        }
+
+            .table-hover tbody tr:hover {
+                background-color: rgba(0, 0, 0, 0.02);
+                transform: scale(1.01);
+            }
+
+        .btn {
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.2);
+                transform: translate(-50%, -50%);
+                transition: width 0.6s, height 0.6s;
+            }
+
+            .btn:hover::before {
+                width: 300px;
+                height: 300px;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+        .page-header {
+            padding: 1.5rem 0;
+        }
+
+            .page-header h2 {
+                font-weight: 700;
+                color: #1c1f23;
+                font-size: 2rem;
+            }
+
+            .page-header .text-muted {
+                color: #6c757d !important;
+                font-size: 0.95rem;
+            }
+
+        .stat-card h4 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card p {
+            font-size: 0.875rem;
+            margin-bottom: 0;
+            opacity: 0.9;
+        }
+
+        .stat-card i {
+            opacity: 0.3;
         }
     </style>
 }

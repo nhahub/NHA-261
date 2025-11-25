@@ -9,102 +9,364 @@
 }
 
 <div class="container mt-4">
-    <h2>@ViewData["Title"]</h2>
-    <p class="text-muted">Welcome, @User.Identity.Name! Here's your daily overview.</p>
-
-    <!-- Quick Stats -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <div class="fs-1 text-primary mb-2">📦</div>
-                    <h5>Products</h5>
-                    <p class="text-muted">Manage items</p>
-                    <!-- UPDATED: Changed to WorkerIndex -->
-                    <a asp-controller="Products" asp-action="WorkerIndex" class="btn btn-outline-primary btn-sm">View All</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <div class="fs-1 text-success mb-2">📥</div>
-                    <h5>Inventory</h5>
-                    <p class="text-muted">Stock levels</p>
-                    <a asp-controller="Inventory" asp-action="List" class="btn btn-outline-success btn-sm">Check Stock</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <div class="fs-1 text-warning mb-2">🛒</div>
-                    <h5>Sales Orders</h5>
-                    <p class="text-muted">Customer orders</p>
-                    <a asp-controller="SalesOrder" asp-action="List" class="btn btn-outline-warning btn-sm">View Orders</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <div class="fs-1 text-info mb-2">📊</div>
-                    <h5>Stock Movements</h5>
-                    <p class="text-muted">Track movements</p>
-                    <a asp-controller="StockMovement" asp-action="List" class="btn btn-outline-info btn-sm">View Logs</a>
-                </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="page-header">
+                <h2 class="mb-2">Worker Dashboard</h2>
+                <p class="text-muted mb-0">Welcome, @User.Identity.Name! Here's your daily overview.</p>
             </div>
         </div>
     </div>
 
-    <!-- Recent Activities -->
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper mb-3">
+                        <i class="fas fa-boxes fa-3x"></i>
+                    </div>
+                    <h5 class="card-title">Inventory</h5>
+                    <p class="text-muted mb-3">Monitor stock levels</p>
+                    <a asp-controller="Inventory" asp-action="List" class="btn btn-primary btn-sm">Check Stock</a>
+                </div>
+                <div class="card-glow"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper mb-3">
+                        <i class="fas fa-shopping-cart fa-3x"></i>
+                    </div>
+                    <h5 class="card-title">Sales Orders</h5>
+                    <p class="text-muted mb-3">Track customer orders</p>
+                    <a asp-controller="SalesOrder" asp-action="List" class="btn btn-warning btn-sm">View Orders</a>
+                </div>
+                <div class="card-glow"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper mb-3">
+                        <i class="fas fa-exchange-alt fa-3x"></i>
+                    </div>
+                    <h5 class="card-title">Stock Movements</h5>
+                    <p class="text-muted mb-3">Track item movements</p>
+                    <a asp-controller="StockMovement" asp-action="List" class="btn btn-info btn-sm">View Logs</a>
+                </div>
+                <div class="card-glow"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
     <div class="row">
         <div class="col-md-8">
-            <div class="card shadow-sm">
+            <div class="card modern-card shadow-sm">
                 <div class="card-header">
-                    <h5 class="mb-0">Recent Stock Movements</h5>
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2"></i>Quick Actions
+                    </h5>
                 </div>
                 <div class="card-body">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Product "Laptop Dell XPS" stock updated</span>
-                                <small class="text-muted">2 hours ago</small>
+                    <div class="action-grid">
+                        <a asp-controller="Inventory" asp-action="Create" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-plus-circle"></i>
                             </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex justify-content-between">
-                                <span>New sales order #1045 received</span>
-                                <small class="text-muted">4 hours ago</small>
+                            <div class="action-content">
+                                <h6>Update Inventory</h6>
+                                <small class="text-muted">Adjust stock levels</small>
                             </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Inventory check completed for Warehouse A</span>
-                                <small class="text-muted">1 day ago</small>
+                        </a>
+
+                        <a asp-controller="StockMovement" asp-action="Create" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-clipboard-list"></i>
                             </div>
-                        </div>
+                            <div class="action-content">
+                                <h6>Record Movement</h6>
+                                <small class="text-muted">Log stock transfers</small>
+                            </div>
+                        </a>
+
+                        <a asp-controller="Inventory" asp-action="List" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="action-content">
+                                <h6>Check Inventory</h6>
+                                <small class="text-muted">View current stock</small>
+                            </div>
+                        </a>
+
+                        <a asp-controller="SalesOrder" asp-action="List" class="action-item">
+                            <div class="action-icon">
+                                <i class="fas fa-list-alt"></i>
+                            </div>
+                            <div class="action-content">
+                                <h6>View Orders</h6>
+                                <small class="text-muted">Check sales orders</small>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm">
+            <div class="card modern-card shadow-sm">
                 <div class="card-header">
-                    <h5 class="mb-0">Quick Actions</h5>
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>System Status
+                    </h5>
                 </div>
                 <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a asp-controller="Products" asp-action="Create" class="btn btn-primary">Add New Product</a>
-                        <a asp-controller="Inventory" asp-action="Create" class="btn btn-outline-primary">Update Inventory</a>
-                        <a asp-controller="StockMovement" asp-action="Create" class="btn btn-outline-secondary">Record Stock Movement</a>
+                    <div class="status-item">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="status-label">
+                                <i class="fas fa-circle text-success me-2"></i>
+                                System Online
+                            </span>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="status-label">
+                                <i class="fas fa-circle text-success me-2"></i>
+                                Database Connected
+                            </span>
+                            <span class="badge bg-success">OK</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="status-label">
+                                <i class="fas fa-circle text-info me-2"></i>
+                                Last Sync
+                            </span>
+                            <span class="badge bg-info">Just now</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .page-header {
+        padding: 1.5rem 0;
+    }
+
+        .page-header h2 {
+            font-weight: 700;
+            color: #1c1f23;
+            font-size: 2rem;
+        }
+
+        .page-header .text-muted {
+            color: #6c757d !important;
+            font-size: 0.95rem;
+        }
+
+    .stat-card {
+        position: relative;
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .stat-card .icon-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+            .stat-card .icon-wrapper i {
+                color: #007bff;
+                transition: all 0.3s ease;
+            }
+
+        .stat-card:hover .icon-wrapper i {
+            transform: scale(1.1) rotate(5deg);
+            color: #0056b3;
+        }
+
+    .card-glow {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #007bff, #00d4ff, #007bff);
+        background-size: 200% 100%;
+        animation: glowMove 3s ease infinite;
+    }
+
+    @@keyframes glowMove {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .modern-card {
+        border-radius: 12px;
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .modern-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        .modern-card .card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 2px solid #dee2e6;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+
+    .action-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .action-item {
+        display: flex;
+        align-items: center;
+        padding: 1.25rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+        .action-item:hover {
+            background: #fff;
+            border-color: #007bff;
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+        }
+
+    .action-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border-radius: 12px;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+        .action-icon i {
+            color: white;
+            font-size: 1.25rem;
+        }
+
+    .action-content h6 {
+        margin: 0 0 0.25rem 0;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .action-content small {
+        font-size: 0.8rem;
+    }
+
+    .status-item {
+        padding: 0.5rem 0;
+    }
+
+    .status-label {
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+    }
+
+        .status-label i {
+            font-size: 0.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 0.5rem 1.25rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+    .badge {
+        padding: 0.35em 0.65em;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.75rem;
+    }
+
+    @@media (max-width: 768px) {
+        .action-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
