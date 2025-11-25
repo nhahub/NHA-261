@@ -194,21 +194,13 @@ namespace STOCKUPMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PurchaseOrderEditViewModel model)
         {
+            // Add debug logging
+            Console.WriteLine($"Editing PO {id}, New Status: {model.Status}");
+
             if (model.OrderItems == null || model.OrderItems.Count == 0 || !ModelState.IsValid)
             {
-                ViewBag.Suppliers =
-                    new SelectList(await _unitOfWork.Suppliers.GetAllAsync(), "SupplierID", "Name", model.SupplierID);
-
-                ViewBag.Warehouses =
-                    new SelectList(await _unitOfWork.Warehouses.GetAllAsync(), "WarehouseID", "Name", model.WarehouseID);
-
-                ViewBag.Categories =
-                    new SelectList(await _unitOfWork.Categories.GetAllAsync(), "CategoryID", "Name");
-
-                ViewBag.Statuses =
-                    new SelectList(new List<string> { "Pending", "Approved", "Cancelled", "Completed" }, model.Status);
-
-                return View(model);
+                Console.WriteLine("Model State Invalid or No Order Items");
+                // ... rest of your code
             }
 
             var po = await _unitOfWork.PurchaseOrders
@@ -216,7 +208,14 @@ namespace STOCKUPMVC.Controllers
                         .Include(p => p.OrderItems)
                         .FirstOrDefaultAsync(p => p.POID == id);
 
-            if (po == null) return NotFound();
+            if (po == null)
+            {
+                Console.WriteLine("Purchase Order not found");
+                return NotFound();
+            }
+
+            // Debug: Check current status
+            Console.WriteLine($"Current Status: {po.Status}, New Status: {model.Status}");
 
             // ❌ Cancelled orders cannot be edited at all
             if (po.Status == "Cancelled")
@@ -240,11 +239,13 @@ namespace STOCKUPMVC.Controllers
 
             var newTotalAmount = model.OrderItems.Sum(i => i.Quantity * i.UnitPrice);
 
-            // Update PO
+            // Update PO - MAKE SURE THIS IS EXECUTING
             po.SupplierID = model.SupplierID;
             po.WarehouseID = model.WarehouseID;
             po.TotalAmount = newTotalAmount;
-            po.Status = model.Status;
+            po.Status = model.Status; // ← THIS IS THE KEY LINE
+
+            Console.WriteLine($"About to save - PO Status will be: {po.Status}");
 
             // Replace items
             po.OrderItems.Clear();
@@ -256,35 +257,25 @@ namespace STOCKUPMVC.Controllers
                 POID = po.POID
             }).ToList();
 
-            await _unitOfWork.CompleteAsync();
-
-            // ➜ Update Inventory only when transitioning to Completed
-            if (markCompleted)
+            try
             {
-                foreach (var item in po.OrderItems)
-                {
-                    var inventory = (await _unitOfWork.Inventories
-                        .FindAsync(inv => inv.ProductID == item.ProductID &&
-                                          inv.WarehouseID == po.WarehouseID))
-                        .FirstOrDefault();
+                var result = await _unitOfWork.CompleteAsync();
+                Console.WriteLine($"Save completed. Result: {result}");
 
-                    if (inventory != null)
-                    {
-                        inventory.Quantity += item.Quantity;
-                        _unitOfWork.Inventories.Update(inventory);
-                    }
-                    else
-                    {
-                        await _unitOfWork.Inventories.AddAsync(new Inventory
-                        {
-                            ProductID = item.ProductID,
-                            WarehouseID = po.WarehouseID,
-                            Quantity = item.Quantity
-                        });
-                    }
+                // ➜ Update Inventory only when transitioning to Completed
+                if (markCompleted)
+                {
+                    Console.WriteLine("Updating inventory for completed PO");
+                    // ... your inventory update code
+                    await _unitOfWork.CompleteAsync();
                 }
 
-                await _unitOfWork.CompleteAsync();
+                TempData["Success"] = "Purchase Order updated successfully!";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving: {ex.Message}");
+                TempData["Error"] = "Error updating purchase order.";
             }
 
             return RedirectToAction("List");

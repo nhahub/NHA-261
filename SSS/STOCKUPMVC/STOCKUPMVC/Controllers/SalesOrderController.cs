@@ -126,13 +126,17 @@ namespace STOCKUPMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SalesOrderEditViewModel vm)
         {
+            Console.WriteLine($"Editing Sales Order {id}, New Status: {vm.Status}");
+
             if (id != vm.OrderID)
             {
+                Console.WriteLine("ID mismatch");
                 return NotFound();
             }
 
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("Model State Invalid");
                 await RepopulateViewModel(vm);
                 return View(vm);
             }
@@ -146,6 +150,7 @@ namespace STOCKUPMVC.Controllers
 
                 if (existingOrder == null)
                 {
+                    Console.WriteLine("Sales Order not found");
                     return NotFound();
                 }
 
@@ -153,9 +158,12 @@ namespace STOCKUPMVC.Controllers
                 var oldStatus = existingOrder.Status;
                 var newStatus = vm.Status;
 
+                Console.WriteLine($"Current Status: {oldStatus}, New Status: {newStatus}");
+
                 // Validate status transition
                 if (!IsValidStatusTransition(oldStatus, newStatus))
                 {
+                    Console.WriteLine($"Invalid status transition: {oldStatus} -> {newStatus}");
                     ModelState.AddModelError("Status", $"Invalid status transition from {oldStatus} to {newStatus}.");
                     await RepopulateViewModel(vm);
                     return View(vm);
@@ -164,9 +172,11 @@ namespace STOCKUPMVC.Controllers
                 // Check inventory before confirming order
                 if (oldStatus != "Confirmed" && newStatus == "Confirmed")
                 {
+                    Console.WriteLine("Checking inventory for confirmation");
                     var inventoryCheck = await CheckInventoryAvailability(existingOrder.OrderItems.ToList(), vm.WarehouseID);
                     if (!inventoryCheck.IsAvailable)
                     {
+                        Console.WriteLine($"Inventory check failed: {inventoryCheck.ErrorMessage}");
                         ModelState.AddModelError("", inventoryCheck.ErrorMessage);
                         await RepopulateViewModel(vm);
                         return View(vm);
@@ -175,8 +185,10 @@ namespace STOCKUPMVC.Controllers
 
                 // Update order properties
                 existingOrder.WarehouseID = vm.WarehouseID;
-                existingOrder.Status = newStatus;
+                existingOrder.Status = newStatus; // ← THIS IS THE KEY LINE
                 existingOrder.TotalAmount = existingOrder.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
+                Console.WriteLine($"About to save - Sales Order Status will be: {existingOrder.Status}");
 
                 // Handle inventory updates based on status changes
                 await HandleInventoryUpdates(existingOrder, oldStatus, newStatus);
@@ -184,9 +196,11 @@ namespace STOCKUPMVC.Controllers
                 _unitOfWork.SalesOrders.Update(existingOrder);
                 var result = await _unitOfWork.CompleteAsync();
 
+                Console.WriteLine($"Save completed. Result: {result}");
+
                 if (result > 0)
                 {
-                    TempData["SuccessMessage"] = $"Order #{id} updated successfully!";
+                    TempData["SuccessMessage"] = $"Order #{id} updated successfully! Status changed to {newStatus}";
                 }
                 else
                 {
@@ -203,7 +217,6 @@ namespace STOCKUPMVC.Controllers
                 return View(vm);
             }
         }
-
         // Helper method to validate status transitions
         private bool IsValidStatusTransition(string oldStatus, string newStatus)
         {
