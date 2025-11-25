@@ -1,0 +1,38 @@
+﻿@model IEnumerable<STOCKUPMVC.Models.Supplier>
+@{
+    ViewData["Title"] = "Suppliers";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="mb-4">Suppliers</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">
+    <i class="fas fa-plus"></i> Add Supplier
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th style="width:150px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.Address</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SupplierID" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.SupplierID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

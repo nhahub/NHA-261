@@ -63,21 +63,22 @@ namespace STOCKUPMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PurchaseOrderCreateVMM model)
         {
-            if (!ModelState.IsValid || model.OrderItems.Count == 0)
+            if (model.OrderItems == null || model.OrderItems.Count == 0 || !ModelState.IsValid)
             {
                 ViewBag.Suppliers = new SelectList(await _unitOfWork.Suppliers.GetAllAsync(), "SupplierID", "Name");
                 ViewBag.Warehouses = new SelectList(await _unitOfWork.Warehouses.GetAllAsync(), "WarehouseID", "Name");
                 ViewBag.Categories = new SelectList(await _unitOfWork.Categories.GetAllAsync(), "CategoryID", "Name");
-
                 return View(model);
             }
+
+            var totalAmount = model.OrderItems.Sum(i => i.Quantity * i.UnitPrice);
 
             var po = new PurchaseOrder
             {
                 SupplierID = model.SupplierID,
                 WarehouseID = model.WarehouseID,
                 OrderTime = DateTime.Now,
-                TotalAmount = model.TotalAmount,
+                TotalAmount = totalAmount,
                 Status = "Pending",
                 OrderItems = model.OrderItems.Select(i => new OrderItem
                 {
@@ -106,6 +107,7 @@ namespace STOCKUPMVC.Controllers
 
             return Json(products);
         }
+
         // GET: Delete Confirmation
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -132,7 +134,6 @@ namespace STOCKUPMVC.Controllers
 
             if (po == null) return NotFound();
 
-            // Delete all related order items first
             foreach (var item in po.OrderItems.ToList())
             {
                 _unitOfWork.OrderItems.Delete(item);
@@ -143,6 +144,7 @@ namespace STOCKUPMVC.Controllers
 
             return RedirectToAction("List");
         }
+
         // GET: Edit
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -154,17 +156,25 @@ namespace STOCKUPMVC.Controllers
 
             if (po == null) return NotFound();
 
+            // ❌ Cancelled orders cannot be edited
+            if (po.Status == "Cancelled")
+            {
+                TempData["Error"] = "Cancelled orders cannot be modified.";
+                return RedirectToAction("List");
+            }
+
             var model = new PurchaseOrderEditViewModel
             {
+                POID = po.POID,
                 SupplierID = po.SupplierID,
                 WarehouseID = po.WarehouseID,
                 Status = po.Status,
+                TotalAmount = po.TotalAmount,
                 OrderItems = po.OrderItems.Select(oi => new PurchaseOrderItemViewModel
                 {
                     ProductID = oi.ProductID,
                     Quantity = oi.Quantity,
-                    UnitPrice = oi.UnitPrice,
-                    // Optional: you can include CategoryID if you track it in OrderItem
+                    UnitPrice = oi.UnitPrice
                 }).ToList()
             };
 
@@ -172,23 +182,32 @@ namespace STOCKUPMVC.Controllers
             ViewBag.Warehouses = new SelectList(await _unitOfWork.Warehouses.GetAllAsync(), "WarehouseID", "Name", model.WarehouseID);
             ViewBag.Categories = new SelectList(await _unitOfWork.Categories.GetAllAsync(), "CategoryID", "Name");
             ViewBag.Statuses = new SelectList(
-            new List<string> { "Pending", "Approved", "Cancelled", "Completed" },
-            model.Status
+                new List<string> { "Pending", "Approved", "Cancelled", "Completed" },
+                model.Status
             );
 
             return View(model);
         }
 
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PurchaseOrderEditViewModel model)
         {
-            if (!ModelState.IsValid || model.OrderItems.Count == 0)
+            if (model.OrderItems == null || model.OrderItems.Count == 0 || !ModelState.IsValid)
             {
-                ViewBag.Suppliers = new SelectList(await _unitOfWork.Suppliers.GetAllAsync(), "SupplierID", "Name", model.SupplierID);
-                ViewBag.Warehouses = new SelectList(await _unitOfWork.Warehouses.GetAllAsync(), "WarehouseID", "Name", model.WarehouseID);
-                ViewBag.Categories = new SelectList(await _unitOfWork.Categories.GetAllAsync(), "CategoryID", "Name");
-                ViewBag.Statuses = new SelectList(new List<string> { "Pending", "Approved", "Cancelled", "Completed" }, model.Status);
+                ViewBag.Suppliers =
+                    new SelectList(await _unitOfWork.Suppliers.GetAllAsync(), "SupplierID", "Name", model.SupplierID);
+
+                ViewBag.Warehouses =
+                    new SelectList(await _unitOfWork.Warehouses.GetAllAsync(), "WarehouseID", "Name", model.WarehouseID);
+
+                ViewBag.Categories =
+                    new SelectList(await _unitOfWork.Categories.GetAllAsync(), "CategoryID", "Name");
+
+                ViewBag.Statuses =
+                    new SelectList(new List<string> { "Pending", "Approved", "Cancelled", "Completed" }, model.Status);
+
                 return View(model);
             }
 
@@ -199,19 +218,36 @@ namespace STOCKUPMVC.Controllers
 
             if (po == null) return NotFound();
 
-            // Check if status is changing to Completed
-            bool markCompleted = po.Status != "Completed" && model.Status == "Completed";
+            // ❌ Cancelled orders cannot be edited at all
+            if (po.Status == "Cancelled")
+            {
+                TempData["Error"] = "Cancelled orders cannot be modified.";
+                return RedirectToAction("List");
+            }
 
-            // Update main PO
+            // ❌ Only Admin can mark Completed
+            if (model.Status == "Completed" && !User.IsInRole("Admin"))
+            {
+                TempData["Error"] = "Only Admin can mark a Purchase Order as Completed.";
+                return RedirectToAction("List");
+            }
+
+            // Determine if inventory update is needed
+            bool markCompleted =
+                po.Status != "Completed" &&
+                po.Status != "Cancelled" &&
+                model.Status == "Completed";
+
+            var newTotalAmount = model.OrderItems.Sum(i => i.Quantity * i.UnitPrice);
+
+            // Update PO
             po.SupplierID = model.SupplierID;
             po.WarehouseID = model.WarehouseID;
-            po.TotalAmount = model.TotalAmount;
+            po.TotalAmount = newTotalAmount;
             po.Status = model.Status;
 
-            // Clear old items
+            // Replace items
             po.OrderItems.Clear();
-
-            // Add updated items
             po.OrderItems = model.OrderItems.Select(i => new OrderItem
             {
                 ProductID = i.ProductID,
@@ -222,24 +258,23 @@ namespace STOCKUPMVC.Controllers
 
             await _unitOfWork.CompleteAsync();
 
-            // ✅ Update Warehouse Stock if Completed
+            // ➜ Update Inventory only when transitioning to Completed
             if (markCompleted)
             {
                 foreach (var item in po.OrderItems)
                 {
-                    // Check if Inventory exists for this Product + Warehouse
                     var inventory = (await _unitOfWork.Inventories
-                        .FindAsync(inv => inv.ProductID == item.ProductID && inv.WarehouseID == po.WarehouseID))
+                        .FindAsync(inv => inv.ProductID == item.ProductID &&
+                                          inv.WarehouseID == po.WarehouseID))
                         .FirstOrDefault();
 
                     if (inventory != null)
                     {
-                        inventory.Quantity += item.Quantity; // increase stock
+                        inventory.Quantity += item.Quantity;
                         _unitOfWork.Inventories.Update(inventory);
                     }
                     else
                     {
-                        // Create new Inventory record
                         await _unitOfWork.Inventories.AddAsync(new Inventory
                         {
                             ProductID = item.ProductID,
@@ -254,6 +289,7 @@ namespace STOCKUPMVC.Controllers
 
             return RedirectToAction("List");
         }
+
         // GET: Details
         [HttpGet]
         public async Task<IActionResult> Details(int id)
@@ -288,9 +324,6 @@ namespace STOCKUPMVC.Controllers
 
             return View(model);
         }
-
-
-
 
     }
 }

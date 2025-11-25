@@ -142,6 +142,19 @@
             <i class="fa-solid fa-box"></i> Products
         </a>
 
+        <a asp-controller="Warehouse" asp-action="Index"
+           class="@(currentController == "Warehouse" ? "active" : "")">
+            <i class="fa-solid fa-building"></i> Warehouses
+        </a>
+
+        <a asp-controller="Category" asp-action="Index" class="nav-link @(currentController == "Category" ? "active" : "")">
+            <i class="fas fa-tags"></i> Categories
+        </a>
+
+        <a asp-controller="Supplier" asp-action="Index" class="nav-link @(currentController == "Supplier" ? "active" : "")">
+            <i class="fas fa-truck"></i> Suppliers
+        </a>
+
         <a asp-controller="Inventory" asp-action="List" class="@(currentController == "Inventory" ? "active" : "")">
             <i class="fa-solid fa-warehouse"></i> Inventory
         </a>

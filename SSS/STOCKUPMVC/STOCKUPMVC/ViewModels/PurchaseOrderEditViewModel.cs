@@ -30,15 +30,8 @@ namespace STOCKUPMVC.ViewModels
 
         public List<PurchaseOrderItemViewModel> OrderItems { get; set; } = new();
 
-        public decimal TotalAmount
-        {
-            get
-            {
-                decimal total = 0;
-                foreach (var item in OrderItems)
-                    total += item.TotalPrice;
-                return total;
-            }
-        }
+        public decimal TotalAmount { get; set; }
+
+        
     }
 }
