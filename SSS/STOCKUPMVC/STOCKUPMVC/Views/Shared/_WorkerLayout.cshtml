@@ -1,0 +1,244 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Microsoft.AspNetCore.Mvc.Controllers
+@inject Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor ActionAccessor
+
+@{
+    string currentController = (ActionAccessor.ActionContext?.ActionDescriptor as ControllerActionDescriptor)?.ControllerName;
+    string currentAction = (ActionAccessor.ActionContext?.ActionDescriptor as ControllerActionDescriptor)?.ActionName;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - STOCKUPMVC (Worker)</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background-color: #1c1f23;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 25px;
+            transition: width 0.3s;
+            z-index: 1000;
+        }
+
+            .sidebar .brand {
+                font-size: 22px;
+                font-weight: 700;
+                color: #fff;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .sidebar a {
+                color: #cfd3d7;
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                font-size: 15px;
+                text-decoration: none;
+                gap: 12px;
+                transition: all 0.2s;
+                border-left: 4px solid transparent;
+            }
+
+                .sidebar a:hover {
+                    background-color: #2c3136;
+                    color: #fff;
+                    border-left: 4px solid #495057;
+                }
+
+                .sidebar a.active {
+                    background-color: #343a40;
+                    color: #fff;
+                    border-left: 4px solid #007bff;
+                }
+
+            .sidebar form button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+        /* Top Header */
+        .top-header {
+            margin-left: 240px;
+            background: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            transition: margin-left 0.3s;
+        }
+
+        .toggle-btn {
+            font-size: 22px;
+            cursor: pointer;
+            color: #444;
+        }
+
+        /* Content */
+        .content {
+            margin-left: 240px;
+            padding: 25px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Mobile */
+        @@media (max-width: 992px) {
+            .sidebar {
+                width: 0;
+                overflow-x: hidden;
+            }
+
+            .top-header {
+                margin-left: 0;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
+
+        /* Worker-specific styling */
+        .worker-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!-- Worker Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="brand">
+            <span>⚡ STOCKUP</span>
+            <div class="worker-badge mt-1">WORKER</div>
+        </div>
+
+        <!-- Worker Dashboard -->
+        <a asp-controller="Home" asp-action="Dashboard" class="@(currentController == "Home" && currentAction == "Dashboard" ? "active" : "")">
+            <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+
+        <!-- View Products (READ-ONLY) -->
+        <a asp-controller="Products" asp-action="WorkerIndex" class="@(currentController == "Products" ? "active" : "")">
+            <i class="fa-solid fa-eye"></i> View Products
+        </a>
+
+        <!-- Inventory Management -->
+        <a asp-controller="Inventory" asp-action="List" class="@(currentController == "Inventory" ? "active" : "")">
+            <i class="fa-solid fa-warehouse"></i> Inventory
+        </a>
+
+        <!-- Sales Orders (FULL ACCESS) -->
+        <a asp-controller="SalesOrder" asp-action="List" class="@(currentController == "SalesOrder" ? "active" : "")">
+            <i class="fa-solid fa-cart-shopping"></i> Sales Orders
+        </a>
+
+        <!-- Purchase Orders (VIEW ONLY) -->
+        <a asp-controller="PurchaseOrder" asp-action="List" class="@(currentController == "PurchaseOrder" ? "active" : "")">
+            <i class="fa-solid fa-eye"></i> View Purchases
+        </a>
+
+        <!-- Stock Movements -->
+        <a asp-controller="StockMovement" asp-action="Index" class="@(currentController == "StockMovement" ? "active" : "")">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i> Stock Movements
+        </a>
+
+        <!-- Logout Form -->
+        <form method="post" asp-controller="Account" asp-action="Logout" class="mt-4 px-3">
+            <button type="submit" class="btn btn-outline-light w-100">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </form>
+    </div>
+
+    <!-- Top Header -->
+    <div class="top-header">
+        <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></span>
+        <div class="fw-bold">@ViewData["Title"] - Worker Access</div>
+        <div>
+            <span class="badge bg-success me-2">STAFF</span>
+            @User.Identity.Name
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        @RenderBody()
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const header = document.querySelector('.top-header');
+
+            if (sidebar.style.width === "240px" || sidebar.style.width === "") {
+                sidebar.style.width = "0";
+                content.style.marginLeft = "0";
+                header.style.marginLeft = "0";
+            } else {
+                sidebar.style.width = "240px";
+                content.style.marginLeft = "240px";
+                header.style.marginLeft = "240px";
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const header = document.querySelector('.top-header');
+
+            if (window.innerWidth <= 992) {
+                sidebar.style.width = "0";
+                content.style.marginLeft = "0";
+                header.style.marginLeft = "0";
+            } else {
+                sidebar.style.width = "240px";
+                content.style.marginLeft = "240px";
+                header.style.marginLeft = "240px";
+            }
+        });
+    </script>
+</body>
+</html>
