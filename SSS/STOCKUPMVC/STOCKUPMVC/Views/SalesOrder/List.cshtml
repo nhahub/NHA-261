@@ -1,0 +1,65 @@
+﻿@model STOCKUPMVC.ViewModels.SalesOrderListViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Sales Orders";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="List" method="get" class="row mb-3">
+
+    <div class="col-md-3">
+        <select name="customerId" class="form-control" asp-items="Model.Customers">
+            <option value="">All Customers</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="warehouseId" class="form-control" asp-items="Model.Warehouses">
+            <option value="">All Warehouses</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="status" class="form-control" asp-items="Model.Statuses">
+            <option value="">All Statuses</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Warehouse</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.OrderID</td>
+                <td>@order.Customer.Name</td>
+                <td>@order.Warehouse.Name</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@order.Status</td>
+                <td>@order.TotalAmount.ToString("C")</td>
+                <td>
+                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@order.OrderID">Details</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@order.OrderID">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@order.OrderID">Cancel</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

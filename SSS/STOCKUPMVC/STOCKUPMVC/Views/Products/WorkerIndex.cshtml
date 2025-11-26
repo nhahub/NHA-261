@@ -1,0 +1,111 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Manage Products";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <p class="text-muted">Product management for staff members</p>
+
+    <!-- Search & Filter -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="SearchString" class="form-control"
+                   placeholder="Search by Name or SKU"
+                   value="@Model.SearchString" />
+        </div>
+        <div class="col-md-4">
+            <select asp-for="CategoryId" asp-items="Model.Categories ?? new SelectList(Enumerable.Empty<SelectListItem>())" class="form-select">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    <!-- Action Buttons -->
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New Product
+        </a>
+        <a asp-controller="Inventory" asp-action="List" class="btn btn-outline-primary">
+            <i class="fas fa-boxes"></i> Manage Inventory
+        </a>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Products List</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Products != null && Model.Products.Any())
+                    {
+                        @foreach (var item in Model.Products)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.SKU</td>
+                                <td>@(item.Category?.Name ?? "N/A")</td>
+                                <td>@item.Price.ToString("C")</td>
+                                <td>
+                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.ProductID">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.ProductID">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">No products found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" href="?page=@i&SearchString=@Model.SearchString&CategoryId=@Model.CategoryId">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

@@ -1,0 +1,58 @@
+﻿@model STOCKUPMVC.Models.ViewModels.ProductFormViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Product.Name"></label>
+        <input asp-for="Product.Name" class="form-control" />
+        <span asp-validation-for="Product.Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Product.SKU"></label>
+        <input asp-for="Product.SKU" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Product.CategoryID">Category</label>
+        <select asp-for="Product.CategoryID" class="form-control" asp-items="Model.Categories">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="Product.CategoryID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Product.Price"></label>
+        <input asp-for="Product.Price" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Product.Description"></label>
+        <textarea asp-for="Product.Description" class="form-control"></textarea>
+    </div>
+
+    <!-- ADDED: Image Upload Field -->
+    <div class="form-group mb-3">
+        <label asp-for="ImageFile" class="control-label">Product Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+        <small class="form-text text-muted">
+            Upload product image (JPEG, PNG, GIF - max 5MB). If no image is selected, a placeholder will be used.
+        </small>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="WorkerIndex" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

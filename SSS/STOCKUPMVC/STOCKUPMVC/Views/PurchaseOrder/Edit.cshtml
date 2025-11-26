@@ -1,0 +1,241 @@
+﻿@model STOCKUPMVC.ViewModels.PurchaseOrderEditViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Purchase Order";
+}
+
+<h2>Edit Purchase Order</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="POID" />
+
+    <!-- Supplier -->
+    <div class="form-group">
+        <label>Supplier</label>
+        <select asp-for="SupplierID" class="form-control" asp-items="ViewBag.Suppliers">
+            <option value="">-- Select Supplier --</option>
+        </select>
+        <span asp-validation-for="SupplierID" class="text-danger"></span>
+    </div>
+
+    <!-- Warehouse -->
+    <div class="form-group mt-3">
+        <label>Warehouse</label>
+        <select asp-for="WarehouseID" class="form-control" asp-items="ViewBag.Warehouses">
+            <option value="">-- Select Warehouse --</option>
+        </select>
+        <span asp-validation-for="WarehouseID" class="text-danger"></span>
+    </div>
+
+    <!-- Status -->
+    <div class="form-group mt-3">
+        <label>Status</label>
+        <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses">
+            <option value="">-- Select Status --</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <hr />
+
+    <!-- Order Items Table -->
+    <table class="table" id="orderItemsTable">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < Model.OrderItems.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <!-- FIX: Added hidden field for CategoryID and proper select binding -->
+                        <input type="hidden" name="OrderItems[@i].CategoryID" class="category-id" value="@Model.OrderItems[i].CategoryID" />
+                        <select class="form-control category-select">
+                            <option value="">--Select--</option>
+                            @foreach (var cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.Value" selected="@(cat.Value == Model.OrderItems[i].CategoryID.ToString())">@cat.Text</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <select name="OrderItems[@i].ProductID" class="form-control product-select">
+                            <option value="">--Select--</option>
+                            <!-- Products will be loaded via JavaScript -->
+                        </select>
+                        <span asp-validation-for="OrderItems[i].ProductID" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input type="text" name="OrderItems[@i].UnitPrice" class="form-control unit-price" value="@Model.OrderItems[i].UnitPrice" readonly />
+                        <span asp-validation-for="OrderItems[i].UnitPrice" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input type="number" name="OrderItems[@i].Quantity" class="form-control quantity" value="@Model.OrderItems[i].Quantity" min="1" />
+                        <span asp-validation-for="OrderItems[i].Quantity" class="text-danger"></span>
+                    </td>
+                    <td><input type="text" class="form-control total" value="@(Model.OrderItems[i].Quantity * Model.OrderItems[i].UnitPrice)" readonly /></td>
+                    <td>
+                        @if (Model.OrderItems.Count > 1)
+                        {
+                            <button type="button" class="btn btn-danger remove-row">X</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary" id="addRow">Add Item</button>
+
+    <div class="mt-3">
+        <label>Total PO Amount: </label>
+        <span id="poTotal">@Model.TotalAmount.ToString("C")</span>
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-success">Update Purchase Order</button>
+        <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize existing rows with their products
+            initializeExistingRows();
+
+            function initializeExistingRows() {
+                $("#orderItemsTable tbody tr").each(function() {
+                    let row = $(this);
+                    let categoryId = row.find('.category-id').val();
+                    let productId = row.find('.product-select').val();
+                    let categorySelect = row.find('.category-select');
+
+                    // Set the category select to match the hidden field
+                    categorySelect.val(categoryId);
+
+                    // Load products for this category
+                    if (categoryId) {
+                        loadProductsForCategory(row, categoryId, productId);
+                    }
+                });
+                recalcPOTotal();
+            }
+
+            function loadProductsForCategory(row, categoryId, selectedProductId = null) {
+                let productSelect = row.find(".product-select");
+                productSelect.empty().append('<option value="">--Select--</option>');
+
+                if (categoryId) {
+                    $.getJSON('/PurchaseOrder/GetProductsByCategory', { categoryId: categoryId }, function (data) {
+                        $.each(data, function (i, product) {
+                            let option = $('<option>', {
+                                value: product.productID,
+                                text: product.name,
+                                'data-price': product.price
+                            });
+                            if (product.productID == selectedProductId) {
+                                option.attr('selected', true);
+                                row.find(".unit-price").val(product.price.toFixed(2));
+                                recalcTotal(row);
+                            }
+                            productSelect.append(option);
+                        });
+                    });
+                }
+            }
+
+            function recalcTotal(row) {
+                let qty = parseFloat(row.find(".quantity").val()) || 0;
+                let price = parseFloat(row.find(".unit-price").val()) || 0;
+                let total = (qty * price).toFixed(2);
+                row.find(".total").val(total);
+                recalcPOTotal();
+            }
+
+            function recalcPOTotal() {
+                let total = 0;
+                $("#orderItemsTable tbody tr").each(function () {
+                    let rowTotal = parseFloat($(this).find(".total").val()) || 0;
+                    total += rowTotal;
+                });
+                $("#poTotal").text('$' + total.toFixed(2));
+            }
+
+            // Add row
+            $("#addRow").click(function () {
+                let rowCount = $("#orderItemsTable tbody tr").length;
+                let newRow = $("#orderItemsTable tbody tr:first").clone();
+
+                // Clear values
+                newRow.find('.category-id').val('');
+                newRow.find('.category-select').val('');
+                newRow.find('.product-select').empty().append('<option value="">--Select--</option>');
+                newRow.find('.unit-price').val('');
+                newRow.find('.quantity').val('');
+                newRow.find('.total').val('');
+
+                // Update names with new index
+                newRow.find(".category-id").attr("name", `OrderItems[${rowCount}].CategoryID`);
+                newRow.find(".product-select").attr("name", `OrderItems[${rowCount}].ProductID`);
+                newRow.find(".unit-price").attr("name", `OrderItems[${rowCount}].UnitPrice`);
+                newRow.find(".quantity").attr("name", `OrderItems[${rowCount}].Quantity`);
+
+                $("#orderItemsTable tbody").append(newRow);
+            });
+
+            // Remove row
+            $(document).on("click", ".remove-row", function () {
+                if ($("#orderItemsTable tbody tr").length > 1) {
+                    $(this).closest("tr").remove();
+                    reindexRows();
+                    recalcPOTotal();
+                }
+            });
+
+            function reindexRows() {
+                $("#orderItemsTable tbody tr").each(function (index) {
+                    $(this).find(".category-id").attr("name", `OrderItems[${index}].CategoryID`);
+                    $(this).find(".product-select").attr("name", `OrderItems[${index}].ProductID`);
+                    $(this).find(".unit-price").attr("name", `OrderItems[${index}].UnitPrice`);
+                    $(this).find(".quantity").attr("name", `OrderItems[${index}].Quantity`);
+                });
+            }
+
+            // Category change → load products and update hidden field
+            $(document).on("change", ".category-select", function () {
+                let row = $(this).closest("tr");
+                let categoryId = $(this).val();
+                row.find('.category-id').val(categoryId);
+                row.find(".unit-price").val('');
+                row.find(".total").val('');
+
+                loadProductsForCategory(row, categoryId);
+            });
+
+            // Product change → set unit price
+            $(document).on("change", ".product-select", function () {
+                let row = $(this).closest("tr");
+                let price = $(this).find("option:selected").data("price") || 0;
+                row.find(".unit-price").val(price.toFixed(2));
+                recalcTotal(row);
+            });
+
+            // Quantity change
+            $(document).on("input", ".quantity", function () {
+                let row = $(this).closest("tr");
+                recalcTotal(row);
+            });
+        });
+    </script>
+}

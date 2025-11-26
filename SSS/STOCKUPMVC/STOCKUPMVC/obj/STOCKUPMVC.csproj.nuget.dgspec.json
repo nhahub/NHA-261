@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Source\\Repos\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj": {}
+    "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Source\\Repos\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj": {
+    "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Source\\Repos\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
         "projectName": "STOCKUPMVC",
-        "projectPath": "C:\\Users\\User\\Source\\Repos\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
+        "projectPath": "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\STOCKUPMVC.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Source\\Repos\\STOCKUPMVC\\STOCKUPMVC\\obj\\",
+        "outputPath": "C:\\Users\\User\\Documents\\GitHub\\STOCKUPREPO\\NHA-261_notorg\\SSS\\STOCKUPMVC\\STOCKUPMVC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -68,6 +68,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.10, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             }
           },
           "imports": [

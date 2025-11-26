@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using STOCKUPMVC.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +6,14 @@ namespace STOCKUPMVC.Models
 {
     public class Product
     {
+        public Product()
+        {
+            Inventories = new List<Inventory>();
+            OrderItems = new List<OrderItem>();
+            SupplierProducts = new List<SupplierProduct>();
+            StockMovements = new List<StockMovement>();
+        }
+
         [Key]
         public int ProductID { get; set; }
 
@@ -19,6 +27,9 @@ namespace STOCKUPMVC.Models
         public int CategoryID { get; set; }
 
         public decimal Price { get; set; }
+
+        // ✅ ADD THIS PROPERTY
+        public string ImageUrl { get; set; } = "/images/placeholder.png";
 
         // Navigation properties
         public Category Category { get; set; }

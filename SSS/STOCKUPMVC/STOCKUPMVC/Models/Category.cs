@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace STOCKUPMVC.Models
@@ -12,7 +13,8 @@ namespace STOCKUPMVC.Models
         public string Name { get; set; }
 
         public string Description { get; set; }
-
+        
+        [ValidateNever]
         public ICollection<Product> Products { get; set; }
     }
 }

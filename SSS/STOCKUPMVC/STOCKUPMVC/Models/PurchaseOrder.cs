@@ -19,6 +19,8 @@ namespace STOCKUPMVC.Models
         public DateTime OrderTime { get; set; }
         public decimal TotalAmount { get; set; }
 
+        public string Status { get; set; } = "Pending";
+
         public Supplier Supplier { get; set; }
         public Warehouse Warehouse { get; set; }
 

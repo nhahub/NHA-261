@@ -1,0 +1,47 @@
+﻿@model STOCKUPMVC.ViewModels.PurchaseOrderDetailsViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Purchase Order Details";
+}
+
+<h2>Purchase Order Details</h2>
+
+<div class="mb-3">
+    <a class="btn btn-secondary" asp-action="List">Back to List</a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">PO Info</h5>
+        <p><strong>PO ID:</strong> @Model.POID</p>
+        <p><strong>Supplier:</strong> @Model.SupplierName</p>
+        <p><strong>Warehouse:</strong> @Model.WarehouseName</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+        <p><strong>Order Time:</strong> @Model.OrderTime.ToString("yyyy-MM-dd HH:mm")</p>
+        <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+    </div>
+</div>
+
+<h4>Order Items</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.UnitPrice.ToString("C")</td>
+                <td>@item.Quantity</td>
+                <td>@item.TotalPrice.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

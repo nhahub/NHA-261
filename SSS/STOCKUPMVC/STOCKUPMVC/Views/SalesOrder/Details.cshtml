@@ -1,0 +1,42 @@
+﻿@model STOCKUPMVC.ViewModels.SalesOrderDetailsViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>@ViewData["Title"] - #@Model.OrderID</h2>
+
+<div class="mb-3">
+    <strong>Customer:</strong> @Model.Customer.Name <br />
+    <strong>Warehouse:</strong> @Model.Warehouse.Name <br />
+    <strong>Order Date:</strong> @Model.OrderDate.ToShortDateString() <br />
+    <strong>Status:</strong> @Model.Status <br />
+    <strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")
+</div>
+
+<h4>Order Items</h4>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice.ToString("C")</td>
+                <td>@(item.Quantity* item.UnitPrice).ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Edit" asp-route-id="@Model.OrderID" class="btn btn-warning">Edit Order</a>
+<a asp-action="List" class="btn btn-secondary">Back to List</a>

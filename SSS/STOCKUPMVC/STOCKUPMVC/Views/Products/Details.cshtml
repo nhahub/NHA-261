@@ -1,0 +1,27 @@
+﻿@model STOCKUPMVC.Models.ViewModels.ProductDetailsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout أقل صلاحيات
+    ViewData["Title"] = "Product Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card p-4 shadow-sm mb-4">
+    <h4>@Model.Product.Name</h4>
+    <dl class="row mt-3">
+        <dt class="col-sm-2">SKU</dt>
+        <dd class="col-sm-10">@Model.Product.SKU</dd>
+
+        <dt class="col-sm-2">Category</dt>
+        <dd class="col-sm-10">@Model.Product.Category?.Name</dd>
+
+        <dt class="col-sm-2">Price</dt>
+        <dd class="col-sm-10">@Model.Product.Price.ToString("C")</dd>
+
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Product.Description</dd>
+    </dl>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to Products</a>
+</div>

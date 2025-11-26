@@ -4,6 +4,12 @@ namespace STOCKUPMVC.ViewModels
 {
     public class RegisterViewModel
     {
+
+        [Required(ErrorMessage = "Role is required.")]
+        [Display(Name = "User Role")]
+        public string Role { get; set; } = "Viewer";
+
+
         [Required(ErrorMessage = "Full name is required.")]
         [Display(Name = "Full Name")]
         [StringLength(100, ErrorMessage = "Full name cannot exceed 100 characters.")]

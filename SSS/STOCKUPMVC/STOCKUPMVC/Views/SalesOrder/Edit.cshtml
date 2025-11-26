@@ -1,0 +1,74 @@
+﻿@model STOCKUPMVC.ViewModels.SalesOrderEditViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Sales Order";
+}
+
+<h2>@ViewData["Title"] - #@Model.OrderID</h2>
+
+<!-- FIX: Added validation summary to see any model errors -->
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="OrderID" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="WarehouseID" class="form-label"></label>
+                <select asp-for="WarehouseID" asp-items="Model.WarehouseList" class="form-control">
+                    <option value="">-- Select Warehouse --</option>
+                </select>
+                <span asp-validation-for="WarehouseID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" asp-items="Model.StatusList" class="form-control">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <h4>Order Items</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Product</th>
+                <th class="text-end">Qty</th>
+                <th class="text-end">Unit Price</th>
+                <th class="text-end">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product?.Name</td>
+                    <td class="text-end">@item.Quantity</td>
+                    <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                    <td class="text-end">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr class="table-info">
+                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                <td class="text-end"><strong>@Model.Items.Sum(i => i.Quantity * i.UnitPrice).ToString("C")</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-success">Update Order</button>
+        <a asp-action="List" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

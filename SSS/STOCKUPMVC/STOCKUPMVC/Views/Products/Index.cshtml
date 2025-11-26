@@ -1,0 +1,96 @@
+﻿@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Products";
+}
+
+
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Search & Filter -->
+<form method="get" asp-action="Index" class="row g-3 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="SearchString" class="form-control"
+               placeholder="Search by Name or SKU"
+               value="@Model.SearchString" />
+    </div>
+    <div class="col-md-4">
+        <select asp-for="CategoryId" asp-items="Model.Categories ?? new SelectList(Enumerable.Empty<SelectListItem>())" class="form-select">
+            <option value="">All Categories</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-primary w-100">Search</button>
+    </div>
+</form>
+
+<!-- Products Table -->
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th style="width: 250px;">Actions</th> <!-- Increased width -->
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Products != null && Model.Products.Any())
+        {
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.SKU</td>
+                    <td>@(item.Category?.Name ?? "N/A")</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@(item.Description ?? "No description")</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Details</a>
+
+                        <!-- ADD TO CART BUTTON - Show to customers only -->
+                        @if (!User.IsInRole("Admin") && !User.IsInRole("Staff"))
+                        {
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.ProductID" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>
+                            </form>
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                        {
+                            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.ProductID">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No products found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination -->
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" href="?page=@i&SearchString=@Model.SearchString&CategoryId=@Model.CategoryId">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

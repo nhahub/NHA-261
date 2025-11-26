@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using STOCKUPMVC.Models;
 using STOCKUPMVC.ViewModels;
+using System.Threading.Tasks;
 
 namespace STOCKUPMVC.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -20,51 +20,54 @@ namespace STOCKUPMVC.Controllers
 
         // ---------------- LOGIN ----------------
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
-            if (User.Identity!.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                // If already logged in, redirect based on role
+                return RedirectToAppropriatePage();
+            }
 
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View("Login", model);
+            if (!ModelState.IsValid) return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    user, model.Password, model.RememberMe, lockoutOnFailure: false);
-
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                {
+                    // Redirect based on user role
+                    return RedirectToAppropriatePage();
+                }
             }
 
             ModelState.AddModelError(string.Empty, "Invalid email or password");
-            return View("Login", model);
+            return View(model);
         }
 
-        // ---------------- REGISTER ----------------
+        // ---------------- REGISTER (Public Viewer) ----------------
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
-            if (User.Identity!.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-
-            return View("Register");
+            return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View("Register", model);
+            if (!ModelState.IsValid) return View(model);
 
             var user = new ApplicationUser
             {
@@ -76,14 +79,19 @@ namespace STOCKUPMVC.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: true);
+                // Default role for public registration is Viewer
+                if (!await _userManager.IsInRoleAsync(user, "Viewer"))
+                    await _userManager.AddToRoleAsync(user, "Viewer");
+
+                // Sign in the user after registration
+                await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
 
-            return View("Register", model);
+            return View(model);
         }
 
         // ---------------- LOGOUT ----------------
@@ -93,7 +101,18 @@ namespace STOCKUPMVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
+        }
+
+        // ---------------- HELPER METHOD FOR ROLE-BASED REDIRECTION ----------------
+        private IActionResult RedirectToAppropriatePage()
+        {
+            if (User.IsInRole("Admin"))
+                return RedirectToAction("AdminView", "Home");
+            else if (User.IsInRole("Staff"))
+                return RedirectToAction("WorkerView", "Home");
+            else
+                return RedirectToAction("Index", "Home");
         }
     }
 }

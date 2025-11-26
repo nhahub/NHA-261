@@ -1,0 +1,26 @@
+﻿@model STOCKUPMVC.Models.ViewModels.ProductDetailsViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Delete Product";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card p-3 mb-3">
+    <h4>@Model.Product.Name</h4>
+    <dl class="row">
+        <dt class="col-sm-2">SKU</dt>
+        <dd class="col-sm-10">@Model.Product.SKU</dd>
+        <dt class="col-sm-2">Category</dt>
+        <dd class="col-sm-10">@Model.Product.Category?.Name</dd>
+        <dt class="col-sm-2">Price</dt>
+        <dd class="col-sm-10">@Model.Product.Price.ToString("C")</dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" name="id" value="@Model.Product.ProductID" />      
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

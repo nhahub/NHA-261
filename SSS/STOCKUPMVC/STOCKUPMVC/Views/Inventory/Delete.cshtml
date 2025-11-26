@@ -1,0 +1,34 @@
+﻿@model STOCKUPMVC.Models.ViewModels.InventoryEditViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Delete Inventory";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete this inventory record?
+</div>
+
+<div class="mb-3">
+    <label>Product</label>
+    <input class="form-control" value="@Model.ProductID" disabled />
+</div>
+
+<div class="mb-3">
+    <label>Warehouse</label>
+    <input class="form-control" value="@Model.WarehouseID" disabled />
+</div>
+
+<div class="mb-3">
+    <label>Quantity</label>
+    <input class="form-control" value="@Model.Quantity" disabled />
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ProductID" name="productId" />
+    <input type="hidden" asp-for="WarehouseID" name="warehouseId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="List" class="btn btn-secondary">Cancel</a>
+</form>

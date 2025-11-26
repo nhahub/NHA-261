@@ -11,7 +11,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // -------------------- IDENTITY --------------------
-// Use Identity with ApplicationUser (int key)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 {
     options.Password.RequireDigit = false;
@@ -23,22 +22,28 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// -------------------- SESSION SUPPORT (ADD THIS) --------------------
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Cart expires after 30 mins
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Important for GDPR
+    options.Cookie.Name = "StockUpCart";
+});
+
 // -------------------- REPOSITORIES --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-// -------------------- AUTHORIZATION POLICY --------------------
-builder.Services.AddControllersWithViews(options =>
-{
-    var policy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-    options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
-});
+// -------------------- CONTROLLERS & VIEWS --------------------
+builder.Services.AddControllersWithViews();
 
-// -------------------- BUILD APP --------------------
+// -------------------- FIX: IActionContextAccessor --------------------
+builder.Services.AddSingleton<Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor, Microsoft.AspNetCore.Mvc.Infrastructure.ActionContextAccessor>();
+
 var app = builder.Build();
 
+// -------------------- MIDDLEWARE --------------------
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -48,6 +53,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+// -------------------- ADD SESSION MIDDLEWARE (ADD THIS) --------------------
+app.UseSession();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -55,6 +63,50 @@ app.UseAuthorization();
 // -------------------- ROUTING --------------------
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// -------------------- SEED DEFAULT ADMIN --------------------
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+    // Ensure roles exist
+    string[] roles = { "Admin", "Staff", "Viewer" };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole<int>(role));
+    }
+
+    // Create default admin if not exists
+    string adminEmail = "hazemhamdyhafez@gmail.com";
+    if (await userManager.FindByEmailAsync(adminEmail) == null)
+    {
+        var admin = new ApplicationUser
+        {
+            FullName = "Hazem Hamdy",
+            UserName = adminEmail,
+            Email = adminEmail
+        };
+        await userManager.CreateAsync(admin, "Hazem123!");
+        await userManager.AddToRoleAsync(admin, "Admin");
+    }
+    // Create default staff if not exists
+    string staffEmail = "moaaz@stockup.com";
+    if (await userManager.FindByEmailAsync(staffEmail) == null)
+    {
+        var staff = new ApplicationUser
+        {
+            FullName = "Moaaz Magdy",
+            UserName = staffEmail,
+            Email = staffEmail
+        };
+        await userManager.CreateAsync(staff, "staff123!");
+        await userManager.AddToRoleAsync(staff, "Staff");
+    }
+}
 
 app.Run();
