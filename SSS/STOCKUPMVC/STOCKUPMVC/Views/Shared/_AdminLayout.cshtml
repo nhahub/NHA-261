@@ -130,7 +130,8 @@
     <div class="sidebar" id="sidebar">
         <div class="brand">⚡ STOCKUP</div>
 
-        <a asp-controller="Home" asp-action="Dashboard" class="@(currentController == "Home" && currentAction == "Dashboard" ? "active" : "")">
+        <!-- FIXED: use AdminDashboard action + correct active check -->
+        <a asp-controller="Home" asp-action="AdminDashboard" class="@(currentController == "Home" && currentAction == "AdminDashboard" ? "active" : "")">
             <i class="fa-solid fa-chart-line"></i> Dashboard
         </a>
 
@@ -145,12 +146,11 @@
                 <i class="fa-solid fa-users-gear"></i> User Management
             </a>
         }
-
-
+        <!--
         <a asp-controller="Products" asp-action="Index" class="@(currentController == "Products" ? "active" : "")">
             <i class="fa-solid fa-box"></i> Products
         </a>
-
+        -->
         <a asp-controller="Warehouse" asp-action="Index"
            class="@(currentController == "Warehouse" ? "active" : "")">
             <i class="fa-solid fa-building"></i> Warehouses
@@ -222,7 +222,7 @@
         }
 
         // Handle window resize
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             const sidebar = document.getElementById('sidebar');
             const content = document.getElementById('content');
             const header = document.querySelector('.top-header');

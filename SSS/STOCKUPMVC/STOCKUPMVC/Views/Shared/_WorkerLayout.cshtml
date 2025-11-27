@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@using Microsoft.AspNetCore.Mvc.Controllers
+﻿@using Microsoft.AspNetCore.Mvc.Controllers
 @inject Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor ActionAccessor
 
 @{
@@ -149,7 +144,7 @@
         </div>
 
         <!-- Worker Dashboard -->
-        <a asp-controller="Home" asp-action="Dashboard" class="@(currentController == "Home" && currentAction == "Dashboard" ? "active" : "")">
+        <a asp-controller="Home" asp-action="WorkerDashboard" class="@(currentController == "Home" && currentAction == "WorkerDashboard" ? "active" : "")">
             <i class="fa-solid fa-chart-line"></i> Dashboard
         </a>
 
@@ -224,7 +219,7 @@
         }
 
         // Handle window resize
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             const sidebar = document.getElementById('sidebar');
             const content = document.getElementById('content');
             const header = document.querySelector('.top-header');
