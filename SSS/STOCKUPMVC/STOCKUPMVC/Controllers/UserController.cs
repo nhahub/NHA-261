@@ -150,8 +150,8 @@ namespace STOCKUPMVC.Controllers
         }
 
         // ---------------- DELETE STAFF ----------------
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // ---------------- DELETE CONFIRMATION PAGE (GET) ----------------
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _userManager.Users
@@ -162,15 +162,49 @@ namespace STOCKUPMVC.Controllers
                 return NotFound();
 
             var roles = await _userManager.GetRolesAsync(user);
-
-            // Admin can delete only Staff
             if (!roles.Contains("Staff"))
             {
                 TempData["Error"] = "You can delete only Staff users.";
                 return RedirectToAction(nameof(List));
             }
 
-            // Prevent self-delete
+            var vm = new UserListItemViewModel
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = roles.FirstOrDefault(),
+                WarehouseName = user.Warehouse?.Name ?? "-"
+            };
+
+            ViewBag.Layout = "_AdminLayout";
+            return View(vm);
+        }
+
+
+
+
+
+        // ---------------- DELETE CONFIRMED (POST) ----------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var user = await _userManager.Users
+                .Include(u => u.Warehouse)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+                return NotFound();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (!roles.Contains("Staff"))
+            {
+                TempData["Error"] = "You can delete only Staff users.";
+                return RedirectToAction(nameof(List));
+            }
+
             if (User.Identity?.Name == user.UserName)
             {
                 TempData["Error"] = "You cannot delete your own account.";
@@ -178,10 +212,12 @@ namespace STOCKUPMVC.Controllers
             }
 
             var result = await _userManager.DeleteAsync(user);
+
             TempData[result.Succeeded ? "Success" : "Error"] =
                 result.Succeeded ? "Staff user deleted." : "Failed to delete user.";
 
             return RedirectToAction(nameof(List));
         }
+
     }
 }
