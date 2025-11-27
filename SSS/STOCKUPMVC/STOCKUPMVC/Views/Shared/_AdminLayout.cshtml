@@ -138,6 +138,15 @@
             <i class="fa-solid fa-boxes"></i> Product Management
         </a>
 
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="User" asp-action="List"
+               class="@(currentController == "User" ? "active" : "")">
+                <i class="fa-solid fa-users-gear"></i> User Management
+            </a>
+        }
+
+
         <a asp-controller="Products" asp-action="Index" class="@(currentController == "Products" ? "active" : "")">
             <i class="fa-solid fa-box"></i> Products
         </a>
