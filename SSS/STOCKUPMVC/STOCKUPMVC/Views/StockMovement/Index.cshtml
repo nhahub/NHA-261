@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<STOCKUPMVC.ViewModels.StockMovementListItemVMM>
 
 @{
-    Layout = "_AdminLayout";
-    ViewData["Title"] = "Stock Movements";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_WorkerLayout.cshtml";
+    }
 }
 
 <h2>Stock Movements</h2>

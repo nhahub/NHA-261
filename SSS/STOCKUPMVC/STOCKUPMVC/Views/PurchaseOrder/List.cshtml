@@ -1,12 +1,21 @@
 ﻿@model STOCKUPMVC.ViewModels.PurchaseOrderListViewModel
 @{
-    Layout = "_AdminLayout";
-    ViewData["Title"] = "Purchase Orders";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_WorkerLayout.cshtml";
+    }
 }
 
 <h2>Purchase Orders</h2>
 
-<a class="btn btn-primary mb-3" asp-action="Create">Create New Purchase Order</a>
+@if (User.IsInRole("Admin"))
+{
+    <a class="btn btn-primary mb-3" asp-action="Create">Create New Purchase Order</a>
+}
 
 <table class="table table-bordered table-striped mt-2">
     <thead class="table-dark">
@@ -32,8 +41,13 @@
                 <td>@po.OrderTime.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>
                     <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@po.POID">Details</a>
-                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@po.POID">update</a>
+                    
+                    
+                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@po.POID">update</a>
+                    
+                    @if (User.IsInRole("Admin")) { 
                     <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@po.POID">Delete</a>
+                    }
                 </td>
             </tr>
         }

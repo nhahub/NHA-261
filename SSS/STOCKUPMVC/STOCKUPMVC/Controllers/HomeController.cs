@@ -25,6 +25,9 @@ namespace STOCKUPMVC.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        // ===============================
+        //           INDEX REDIRECT
+        // ===============================
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
@@ -33,20 +36,23 @@ namespace STOCKUPMVC.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var roles = await _userManager.GetRolesAsync(user);
 
-                // Admin/Staff users go to Dashboard
-                if (roles.Contains("Admin") || roles.Contains("Staff"))
-                {
-                    return RedirectToAction("Dashboard");
-                }
+                if (roles.Contains("Admin"))
+                    return RedirectToAction(nameof(AdminDashboard));
+
+                if (roles.Contains("Staff"))
+                    return RedirectToAction(nameof(WorkerDashboard));
             }
 
-            // All others (public or viewer) see UserView with PRODUCT LIST
+            // Public user = product list
             var productVm = await GetProductListViewModel(null, null, 1);
             return View("UserView", productVm);
         }
 
-        [Authorize(Roles = "Admin,Staff")]
-        public async Task<IActionResult> Dashboard()
+        // ===============================
+        //         ADMIN DASHBOARD
+        // ===============================
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminDashboard()
         {
             var vm = new DashboardViewModel
             {
@@ -57,22 +63,34 @@ namespace STOCKUPMVC.Controllers
                 RecentSalesOrders = await _unitOfWork.SalesOrders
                     .GetAllQueryable()
                     .Include(so => so.Customer)
-                    .Include(so => so.OrderItems)
                     .OrderByDescending(s => s.OrderDate)
                     .Take(5)
                     .ToListAsync(),
                 RecentPurchaseOrders = await _unitOfWork.PurchaseOrders
                     .GetAllQueryable()
                     .Include(po => po.Supplier)
-                    .Include(po => po.OrderItems)
                     .OrderByDescending(p => p.OrderTime)
                     .Take(5)
                     .ToListAsync()
             };
 
-            return View(vm);
+            // IMPORTANT: explicitly use Dashboard.cshtml
+            return View("Dashboard", vm);
         }
 
+        // ===============================
+        //         WORKER DASHBOARD
+        // ===============================
+        [Authorize(Roles = "Staff")]
+        public IActionResult WorkerDashboard()
+        {
+            // IMPORTANT: use your WorkerView.cshtml as Worker Dashboard
+            return View("WorkerView");
+        }
+
+        // ===============================
+        //     PRODUCT LIST FOR ADMIN
+        // ===============================
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminView(string searchString, int? categoryId, int page = 1)
         {
@@ -80,6 +98,9 @@ namespace STOCKUPMVC.Controllers
             return View(vm);
         }
 
+        // ===============================
+        //  PRODUCT LIST FOR STAFF (VIEW ONLY)
+        // ===============================
         [Authorize(Roles = "Staff,Admin")]
         public async Task<IActionResult> WorkerView(string searchString, int? categoryId, int page = 1)
         {
@@ -87,6 +108,9 @@ namespace STOCKUPMVC.Controllers
             return View(vm);
         }
 
+        // ===============================
+        //  PRODUCT LIST FOR PUBLIC
+        // ===============================
         [AllowAnonymous]
         public async Task<IActionResult> UserView(string searchString, int? categoryId, int page = 1)
         {
@@ -99,6 +123,9 @@ namespace STOCKUPMVC.Controllers
             return View();
         }
 
+        // ===============================
+        //     REUSABLE PRODUCT LIST
+        // ===============================
         private async Task<ProductListViewModel> GetProductListViewModel(string searchString, int? categoryId, int page)
         {
             var query = _unitOfWork.Products

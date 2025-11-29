@@ -1,87 +1,788 @@
 ﻿@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Welcome to StockUp MVC";
 }
 
-<!-- ADD NULL CHECK -->
-@if (Model == null)
-{
-    <div class="alert alert-warning">
-        <h4>No products available</h4>
-        <p>Please check back later or contact administrator.</p>
+<style>
+    /* ===== HERO SECTION ===== */
+    .hero-section {
+        position: relative;
+        height: 90vh;
+        background: linear-gradient(140deg, rgba(0,0,0,0.5), rgba(0,0,0,0.75)), url('/images/warehouse-bg.jpg') center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 0.3;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: white;
+        animation: fadeInUp 1.2s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 3px 5px 15px rgba(0,0,0,0.5);
+        letter-spacing: -2px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.8rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        opacity: 0.95;
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+        opacity: 0.85;
+        margin-bottom: 2.5rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-hero {
+        padding: 16px 45px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        margin: 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-hero-primary {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        border: none;
+        color: #000;
+        box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
+    }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.6);
+            color: #000;
+        }
+
+    .btn-hero-secondary {
+        border: 2px solid white;
+        color: white;
+        background: transparent;
+    }
+
+        .btn-hero-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+    .scroll-indicator {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: bounce 2s infinite;
+        color: white;
+        font-size: 2.5rem;
+        opacity: 0.8;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        40% {
+            transform: translateX(-50%) translateY(-15px);
+        }
+
+        60% {
+            transform: translateX(-50%) translateY(-7px);
+        }
+    }
+
+    /* ===== FEATURES SECTION ===== */
+    .features-section {
+        padding: 80px 0;
+        background: linear-gradient(to bottom, #ffffff 0%, #f8f9fb 100%);
+    }
+
+    .section-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+        }
+
+    .section-subtitle {
+        font-size: 1.3rem;
+        color: #6c757d;
+        margin-top: 2rem;
+    }
+
+    .feature-card {
+        border: none;
+        border-radius: 20px;
+        padding: 40px 30px;
+        background: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+        text-align: center;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+        }
+
+    .feature-icon {
+        font-size: 4rem;
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.15) rotate(5deg);
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    .feature-description {
+        color: #6c757d;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+
+    /* ===== PRODUCTS SECTION ===== */
+    .products-section {
+        padding: 80px 0;
+        background: #f8f9fb;
+    }
+
+    .filter-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        margin-bottom: 50px;
+    }
+
+    .filter-label {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+        padding: 14px 20px;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+        }
+
+    .btn-filter {
+        border-radius: 12px;
+        padding: 14px 30px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        font-size: 1.05rem;
+    }
+
+        .btn-filter:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+    .product-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+    }
+
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+    .product-img-wrapper {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+    .product-card:hover .product-img-wrapper img {
+        transform: scale(1.15);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: #000;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        z-index: 1;
+        box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .product-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 12px;
+    }
+
+    .product-description {
+        color: #6c757d;
+        font-size: 1rem;
+        margin-bottom: 20px;
+        min-height: 48px;
+        line-height: 1.6;
+    }
+
+    .product-price {
+        font-size: 2.2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+    }
+
+    .btn-view {
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 700;
+        border: 2px solid #667eea;
+        color: #667eea;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+        .btn-view:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+    .btn-add-cart {
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        border: none;
+        color: #000;
+        transition: all 0.3s ease;
+    }
+
+        .btn-add-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+            color: #000;
+        }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        padding: 80px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .cta-title {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+    }
+
+    .cta-description {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        margin-bottom: 2.5rem;
+    }
+
+    .btn-cta {
+        padding: 18px 50px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        border: none;
+        color: #000;
+        box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+        .btn-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.5);
+            color: #000;
+        }
+
+    /* ===== PAGINATION ===== */
+    .pagination {
+        margin-top: 50px;
+    }
+
+    .page-link {
+        border-radius: 12px;
+        margin: 0 5px;
+        padding: 12px 22px;
+        border: 2px solid #e9ecef;
+        color: #667eea;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+
+        .page-link:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+    }
+
+    /* ===== ALERT STYLING ===== */
+    .alert-custom {
+        border-radius: 20px;
+        border: none;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .alert-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+        }
+
+        .btn-hero {
+            padding: 12px 30px;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<!-- ===== HERO SECTION ===== -->
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">STOCKUP MVC</h1>
+        <p class="hero-subtitle">Smart Warehouse & Inventory Management System</p>
+        <p class="hero-description">
+            A modern way to streamline inventory, warehouses, and orders.
+            Join thousands of businesses improving operations with StockUp.
+        </p>
+        <div>
+            <a href="#products" class="btn btn-hero btn-hero-primary">
+                <i class="fas fa-shopping-bag me-2"></i>Browse Products
+            </a>
+            @if (!User.Identity!.IsAuthenticated)
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-hero btn-hero-secondary">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            }
+        </div>
     </div>
-    return;
-}
 
+    <div class="scroll-indicator" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'});">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</div>
 
-    <!-- rest of your code -->
-<div class="container mt-4">
-    <h1 class="mb-4">Available Products</h1>
-
-    <!-- Search & Filter -->
-    <form method="get" class="row g-3 mb-4">
-        <div class="col-md-6">
-            <input type="text" name="SearchString" value="@Model.SearchString" class="form-control" placeholder="Search products..." />
+<!-- ===== WHY CHOOSE US SECTION ===== -->
+<section id="features" class="features-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Why Choose StockUp?</h2>
+            <p class="section-subtitle">
+                Manage inventory, orders, and warehouses efficiently with a single, integrated platform.
+            </p>
         </div>
-        <div class="col-md-4">
-            <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
-                <option value="">All Categories</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
-        </div>
-    </form>
 
-    <!-- Products Grid -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var product in Model.Products)
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+                    <h4 class="feature-title">Inventory Tracking</h4>
+                    <p class="feature-description">
+                        Monitor product movement and stock levels in real time with visual analytics.
+                        Track every item from warehouse to customer.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-building-gear"></i>
+                    </div>
+                    <h4 class="feature-title">Warehouse Management</h4>
+                    <p class="feature-description">
+                        Optimize warehouse space and streamline supply chain operations.
+                        Organize layout, locations, and logistics with ease.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <h4 class="feature-title">Analytics & Insights</h4>
+                    <p class="feature-description">
+                        Generate detailed sales, purchase, and stock reports instantly.
+                        Make better decisions with real-time analytics dashboards.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PRODUCTS SECTION ===== -->
+<section id="products" class="products-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Available Products</h2>
+            <p class="section-subtitle">Discover our wide range of quality products</p>
+        </div>
+
+        @if (Model == null || Model.Products == null)
         {
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <!-- Use product ImageUrl -->
-                    <img src="@(product.ImageUrl ?? "/images/placeholder.png")" class="card-img-top" alt="@product.Name" />
+            <div class="alert alert-custom alert-warning">
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h4>No products available</h4>
+                <p>Please check back later or contact administrator.</p>
+            </div>
+        }
+        else
+        {
+            <!-- Search & Filter Card -->
+            <div class="filter-card">
+                <form method="get" asp-action="UserView" asp-controller="Home">
+                    <div class="row g-4 align-items-end">
+                        <div class="col-md-5">
+                            <label class="filter-label">
+                                <i class="fas fa-search"></i>
+                                Search Products
+                            </label>
+                            <input type="text"
+                                   name="SearchString"
+                                   value="@Model.SearchString"
+                                   class="form-control"
+                                   placeholder="Search by name or description..." />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="filter-label">
+                                <i class="fas fa-filter"></i>
+                                Category
+                            </label>
+                            <select name="CategoryId"
+                                    asp-items="Model.Categories"
+                                    class="form-select">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-filter w-100">
+                                <i class="fas fa-check me-2"></i>Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@product.Name</h5>
-
-                        <!-- Short description from existing Description -->
-                        <p class="card-text text-truncate">
-                            @(product.Description != null && product.Description.Length > 50 ? product.Description.Substring(0, 50) + "..." : product.Description)
+            <!-- Products Grid -->
+            @if (Model.Products.Any())
+            {
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col">
+                            <div class="product-card">
+                                <div class="product-img-wrapper">
+                                    <span class="product-badge">New</span>
+                                    <img src="@(product.ImageUrl ?? "/images/placeholder.png")"
+                                         alt="@product.Name" />
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="product-title">@product.Name</h5>
+                                    <p class="product-description">
+                                        @(product.Description != null && product.Description.Length > 80
+                                                                    ? product.Description.Substring(0, 80) + "..."
+                                                                    : product.Description ?? "No description available")
                         </p>
-
                         <div class="mt-auto">
-                            <span class="fw-bold text-primary h5">$@product.Price</span>
-                            <div class="d-flex gap-2 mt-2">
-                                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductID"
-                                   class="btn btn-sm btn-outline-primary flex-fill">View</a>
-                                <!-- ADD TO CART BUTTON -->
-                                <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                            <div class="product-price">$@product.Price</div>
+                            <div class="d-flex gap-2">
+                                <a asp-controller="Products"
+                                   asp-action="Details"
+                                   asp-route-id="@product.ProductID"
+                                   class="btn btn-view flex-fill">
+                                    <i class="fas fa-eye me-2"></i>View
+                                </a>
+                                <form asp-controller="Cart"
+                                      asp-action="AddToCart"
+                                      method="post"
+                                      class="flex-fill">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="productId" value="@product.ProductID" />
                                     <input type="hidden" name="quantity" value="1" />
-                                    <button type="submit" class="btn btn-sm btn-warning flex-fill">Add to Cart</button>
+                                    <button type="submit" class="btn btn-add-cart w-100">
+                                        <i class="fas fa-cart-plus me-2"></i>Add
+                                    </button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+                        }
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link"
+                                       href="?CategoryId=@Model.CategoryId&SearchString=@Model.SearchString&page=@i#products">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="alert alert-custom alert-info">
+                    <div class="alert-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h4>No products found</h4>
+                    <p>Try adjusting your search or filter criteria.</p>
+                </div>
+            }
         }
     </div>
+</section>
 
-    <!-- Pagination -->
-    @if (Model.TotalPages > 1)
-    {
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-                @for (int i = 1; i <= Model.TotalPages; i++)
-                {
-                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="?CategoryId=@Model.CategoryId&SearchString=@Model.SearchString&page=@i">@i</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    }
-</div>
+<!-- ===== CTA SECTION ===== -->
+<section class="cta-section">
+    <div class="container">
+        <h3 class="cta-title">Ready to take control of your warehouse?</h3>
+        <p class="cta-description">
+            Get started with StockUp MVC today and streamline your inventory operations.
+        </p>
+        @if (!User.Identity!.IsAuthenticated)
+        {
+            <a asp-controller="Account" asp-action="Register" class="btn btn-cta">
+                <i class="fas fa-rocket me-2"></i>Get Started Now
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Products" asp-action="Index" class="btn btn-cta">
+                <i class="fas fa-shopping-cart me-2"></i>Continue Shopping
+            </a>
+        }
+    </div>
+</section>
+
+<script>
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Animate cards on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '0';
+                entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards
+    document.querySelectorAll('.product-card, .feature-card').forEach(card => {
+        observer.observe(card);
+    });
+
+    // Add to cart animation feedback
+    document.querySelectorAll('.btn-add-cart').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.classList.add('fa-bounce');
+                setTimeout(() => {
+                    icon.classList.remove('fa-bounce');
+                }, 1000);
+            }
+        });
+    });
+
+    // Scroll to products section after filter/pagination
+    window.addEventListener('load', function() {
+        if (window.location.search.includes('CategoryId') ||
+            window.location.search.includes('SearchString') ||
+            window.location.search.includes('page')) {
+            setTimeout(() => {
+                document.getElementById('products')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+    });
+</script>

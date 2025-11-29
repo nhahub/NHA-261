@@ -1,7 +1,13 @@
 ﻿@model STOCKUPMVC.ViewModels.SalesOrderListViewModel
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Sales Orders";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_WorkerLayout.cshtml";
+    }
 }
 
 <h2>@ViewData["Title"]</h2>
